@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskids.screens.AddTaskScreen
 import com.example.taskids.screens.HomeScreen
+import com.example.taskids.screens.child.ChildLogin
+import com.example.taskids.screens.child.ChildRescopenseScreen
 import com.example.taskids.screens.parent.TaskTabsScreen
 import com.example.taskids.screens.child.ChildTaskScreen
 import com.example.taskids.screens.child.QRCodeScannerScreen
@@ -45,6 +47,7 @@ class MainActivity : ComponentActivity() {
                         composable ( route = "parentchildqrcode" ) { ParentChildQRCode(navController) }
 //                        composable ( route = "childlogin" ) { ChildLogin(navController) } -> Rota para habilitar o QrCode
                         composable ( route = "childhome") { ChildTaskScreen(navController) }
+                        composable ( route = "childreconpense") { ChildRescopenseScreen(navController) }
 
                         composable("taskList/{childId}") { backStackEntry ->
                             val childId = backStackEntry.arguments?.getString("childId")?.toIntOrNull()

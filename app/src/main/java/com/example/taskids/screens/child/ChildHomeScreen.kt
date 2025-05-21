@@ -1,6 +1,8 @@
 package com.example.taskids.screens.child
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +19,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,100 +33,160 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.taskids.R
 
 @Composable
-fun ChildTaskScreen(navController: NavController,childName: String = "NOME") {
-    var showCompleted by remember { mutableStateOf(false) }
-
-    val tasks = listOf("Arrumar a cama", "Estudar", "Guardar brinquedos")
-    val completedTasks = listOf("Lavar as mãos", "Comer frutas")
+fun ChildTaskScreen(navController: NavController, childName: String = "Clara") {
+    var selectedTab by remember { mutableStateOf("Pendentes") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF4DB8FF)) // azul claro
             .padding(16.dp)
     ) {
-        // Topo: Foto + Nome + Troféu
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(Color.LightGray, CircleShape)
-                ) {}
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = childName,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .background(Color.LightGray, RoundedCornerShape(4.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
-                )
-            }
-
-            Icon(
-                imageVector = Icons.Default.EmojiEvents,
-                contentDescription = "Troféus",
-                tint = Color(0xFFFFC107), // amarelo
-                modifier = Modifier.size(32.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(48.dp))
-
-        // Card central
+        // CARD SUPERIOR
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
-                .background(Color.White, RoundedCornerShape(16.dp))
+                .height(180.dp)
+                .background(Color(0xFFB065EA), RoundedCornerShape(20.dp))
                 .padding(16.dp)
-                .shadow(4.dp),
-            contentAlignment = Alignment.Center
         ) {
-            Text(text = "Aguardando tarefas", fontWeight = FontWeight.Medium)
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "Olá, $childName!",
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Text(
+                            text = "Vamos completar tarefas?",
+                            color = Color.White.copy(alpha = 0.9f),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+
+                    // AVATAR
+                    Image(
+                        painter = painterResource(id = R.drawable.catpfp),
+                        contentDescription = "Avatar",
+                        modifier = Modifier
+                            .size(64.dp)
+                            .background(Color(0xFF8A3AC8), CircleShape)
+                            .padding(4.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // PONTOS E TAREFAS
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    StatCard(Icons.Default.Star, "0 pontos")
+                    StatCard(Icons.Default.Schedule, "0 tarefas")
+                }
+            }
         }
 
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        // Botões: Tarefas e Completas!
+        // TÍTULO "Minhas tarefas"
+        Text(
+            text = "Minhas tarefas",
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            color = Color.Black
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // TABS: Pendentes / Aprovadas
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFCD9BFF), RoundedCornerShape(16.dp))
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Button(
-                onClick = { /* ação para tarefas */ },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
-                modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-            ) {
-                Text("Tarefas", color = Color.Black, fontWeight = FontWeight.Bold)
-            }
+            TabButton(
+                text = "Pendentes",
+                selected = selectedTab == "Pendentes"
+            ) { selectedTab = "Pendentes" }
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Button(
-                onClick = { /* ação para completas */ },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00FF00)),
-                modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-            ) {
-                Text("Completas!", color = Color.Black, fontWeight = FontWeight.Bold)
-            }
+            TabButton(
+                text = "Aprovadas",
+                selected = selectedTab == "Aprovadas"
+            ) { selectedTab = "Aprovadas" }
         }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // TEXTO CENTRAL
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Você não tem tarefas",
+                color = Color.Gray,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = "Pendentes no momento",
+                color = Color.Gray,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun StatCard(icon: ImageVector, label: String) {
+    Row(
+        modifier = Modifier
+            .background(Color(0xFFCD9BFF), RoundedCornerShape(12.dp))
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = Color.White
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = label, color = Color.White)
+    }
+}
+
+@Composable
+fun TabButton(text: String, selected: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (selected) Color.White else Color.Transparent)
+            .clickable { onClick() }
+            .padding(vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            color = if (selected) Color(0xFF9B26B6) else Color.White,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+        )
     }
 }
