@@ -14,15 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,13 +30,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.taskids.R
 
@@ -51,6 +46,7 @@ fun ChildTaskScreen(navController: NavController, childName: String = "Clara") {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(16.dp)
     ) {
         // CARD SUPERIOR
@@ -110,7 +106,8 @@ fun ChildTaskScreen(navController: NavController, childName: String = "Clara") {
         Text(
             text = "Minhas tarefas",
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-            color = Color.Black
+            color = Color.Black,
+            fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -119,18 +116,21 @@ fun ChildTaskScreen(navController: NavController, childName: String = "Clara") {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFCD9BFF), RoundedCornerShape(16.dp))
-                .padding(4.dp),
+                .background(Color(0xFFC890FD), RoundedCornerShape(16.dp))
+                .padding(5.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             TabButton(
                 text = "Pendentes",
-                selected = selectedTab == "Pendentes"
+                selected = selectedTab == "Pendentes",
+                modifier = Modifier.weight(1f)
+
             ) { selectedTab = "Pendentes" }
 
             TabButton(
                 text = "Aprovadas",
-                selected = selectedTab == "Aprovadas"
+                selected = selectedTab == "Aprovadas",
+                modifier = Modifier.weight(1f)
             ) { selectedTab = "Aprovadas" }
         }
 
@@ -143,13 +143,17 @@ fun ChildTaskScreen(navController: NavController, childName: String = "Clara") {
         ) {
             Text(
                 text = "Você não tem tarefas",
-                color = Color.Gray,
-                style = MaterialTheme.typography.bodyMedium
+                color = Color(0xFFC9C9C9),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp
             )
             Text(
                 text = "Pendentes no momento",
-                color = Color.Gray,
-                style = MaterialTheme.typography.bodyMedium
+                color = Color(0xFFC9C9C9),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp
             )
         }
     }
@@ -174,13 +178,13 @@ fun StatCard(icon: ImageVector, label: String) {
 }
 
 @Composable
-fun TabButton(text: String, selected: Boolean, onClick: () -> Unit) {
+fun TabButton(text: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(if (selected) Color.White else Color.Transparent)
             .clickable { onClick() }
-            .padding(vertical = 8.dp),
+            .padding(vertical = 2.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
