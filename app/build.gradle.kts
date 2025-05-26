@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 android {
@@ -43,6 +44,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.runtime.android)
     val navVersion = "2.8.9"
+    val ktorVersion = "2.3.7"
 
     implementation("androidx.datastore:datastore-preferences:1.1.6")
     implementation("androidx.constraintlayout:constraintlayout-compose-android:1.1.1")
@@ -61,6 +63,13 @@ dependencies {
 
     implementation ("androidx.core:core-ktx:1.12.0")
     implementation ("androidx.appcompat:appcompat:1.6.1")
+
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("org.slf4j:slf4j-android:1.7.36")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
