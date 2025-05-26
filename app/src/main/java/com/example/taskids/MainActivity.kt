@@ -66,6 +66,7 @@ class MainActivity : ComponentActivity() {
                                 println("QR Code escaneado: $scannedCode")
                                 // navController.navigate("taskscreen/${scannedCode}")
                             }
+                            ///asdf
                         }
                     }
                 }
