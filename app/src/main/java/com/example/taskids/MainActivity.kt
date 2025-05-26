@@ -13,7 +13,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskids.screens.AddTaskScreen
 import com.example.taskids.screens.HomeScreen
-import com.example.taskids.screens.UserListScreen
 import com.example.taskids.screens.child.ChildLogin
 import com.example.taskids.screens.child.ChildRescopenseScreen
 import com.example.taskids.screens.parent.TaskTabsScreen
@@ -40,8 +39,8 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
 
                     NavHost(navController=navController, startDestination = "user") {
-//                        composable ( route = "home" ) { HomeScreen(navController) }
-                        composable ( route = "user" ) { UserListScreen(navController) }
+                        composable ( route = "home" ) { HomeScreen(navController) }
+//                        composable ( route = "user" ) { UserListScreen(navController) }
                         composable ( route = "parentlogin" ) { ParentLogin(navController) }
                         composable ( route = "parentregister" ) { ParenRegister(navController) }
                         composable ( route = "parentlistchild" ) { ParentListChild(navController) }
