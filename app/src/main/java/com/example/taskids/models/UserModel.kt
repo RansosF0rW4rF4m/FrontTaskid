@@ -1,13 +1,15 @@
 package com.example.taskids.models
 
+import com.google.gson.annotations.SerializedName
+
 data class UserModel(
-    val id: Int? = null,
+    val id: Int,
     val username: String,
     val email: String,
-    val first_name: String,
-    val last_name: String,
-    val user_type: String,
-    val bio: String? = null,
-    val kids: List<Int> = emptyList(),
-    val guardians: List<Int> = emptyList()
+    @SerializedName("first_name") val firstName: String,
+    @SerializedName("last_name") val lastName: String,
+    @SerializedName("user_type") val userType: String,
+    val bio: String?,
+    val kids: List<Int>?,
+    val guardians: List<Int>?
 )

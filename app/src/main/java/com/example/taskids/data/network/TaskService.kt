@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface TaskService {
 
-    @GET("tasks/")
+    @GET("tasks/{id}")
     suspend fun getTasks(@Header("Authorization") token: String): Response<List<TaskModel>>
 
     @POST("tasks/")
