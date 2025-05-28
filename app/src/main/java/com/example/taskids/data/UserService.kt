@@ -18,7 +18,7 @@ interface UserService {
     suspend fun getUser(@Path("id") id: Int): UserModel
 
     @GET("users/users/")
-    suspend fun getAllUsers(): UserModel
+    suspend fun getAllUsers(): List<UserModel>
 
     // Atualizar perfil por ID
     @PUT("users/{id}/")

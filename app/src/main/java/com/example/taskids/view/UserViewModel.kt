@@ -25,7 +25,7 @@ class UserViewModel @Inject constructor(
     private fun fetchUsers() {
         viewModelScope.launch {
             try {
-                _users.value = listOf(repository.getAllUsers())
+                _users.value = repository.getAllUsers()
             } catch (e: Exception) {
                 // Tratar erro de rede, etc.
                 e.printStackTrace()

@@ -39,7 +39,7 @@ fun UserItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "${user.firstName} ${user.lastName}",
+                text = "${user.firstName.orEmpty()} ${user.lastName.orEmpty()}",
                 fontSize = 16.sp,
                 color = Color.Black
             )
@@ -47,7 +47,7 @@ fun UserItem(
                 text = when (user.userType) {
                     UserType.GUARDIAN -> "Responsável"
                     UserType.KID -> "Filho(a)"
-                    null -> TODO()
+                    null -> "Tipo gay"
                 },
                 fontSize = 16.sp,
                 color = Color.Gray

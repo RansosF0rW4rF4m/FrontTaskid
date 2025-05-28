@@ -41,8 +41,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    NavHost(navController=navController, startDestination = "home") {
+                    NavHost(navController=navController, startDestination = "userlist") {
                         composable ( route = "home" ) { HomeScreen(navController) }
+                        composable ( route = "useerlist" ) { UserListScreen {} }
                         composable ( route = "parentlogin" ) { ParentLogin(navController) }
                         composable ( route = "parentregister" ) { ParenRegister(navController) }
                         composable ( route = "parentlistchild" ) { ParentListChild(navController) }
@@ -57,15 +58,6 @@ class MainActivity : ComponentActivity() {
                             if (childId != null) {
                                 TaskTabsScreen(childId = childId, navController = navController)
                             }
-                        }
-
-                        composable("userList") {
-                            UserListScreen(
-                                onUserClick = { user ->
-                                    // ação ao clicar no usuário (exemplo)
-                                    println("Usuário clicado: ${user.firstName}")
-                                }
-                            )
                         }
 
                         composable("addTask/{childId}") { backStackEntry ->

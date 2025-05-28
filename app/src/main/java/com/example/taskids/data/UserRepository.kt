@@ -1,8 +1,6 @@
 package com.example.taskids.data
 
-import com.example.taskids.data.network.ApiService
 import com.example.taskids.models.UserModel
-import retrofit2.Response
 
 class UserRepository {
     // Usa diretamente o userService já configurado no ApiClient
@@ -20,7 +18,7 @@ class UserRepository {
         return service.getUser(id)
     }
 
-    suspend fun getAllUsers(): UserModel {
+    suspend fun getAllUsers(): List<UserModel> {
         return service.getAllUsers()
     }
 

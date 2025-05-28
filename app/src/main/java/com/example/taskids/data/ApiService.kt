@@ -1,6 +1,5 @@
-package com.example.taskids.data.network
+package com.example.taskids.data
 
-import com.example.taskids.data.UserService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
