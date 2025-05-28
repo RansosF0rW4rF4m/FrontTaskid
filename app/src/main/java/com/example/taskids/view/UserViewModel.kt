@@ -25,9 +25,11 @@ class UserViewModel @Inject constructor(
     private fun fetchUsers() {
         viewModelScope.launch {
             try {
+                println("Fetching users...") // Debugging log
                 _users.value = repository.getAllUsers()
+                println("Users fetched: ${_users.value}") // Debugging log
             } catch (e: Exception) {
-                // Tratar erro de rede, etc.
+                println("Error fetching users: ${e.message}")
                 e.printStackTrace()
             }
         }

@@ -14,20 +14,20 @@ interface UserService {
     suspend fun register(@Body user: UserModel): UserModel
 
     // Obter perfil por ID (em vez de token)
-    @GET("users/{id}/")
+    @GET("users/users/{id}/")
     suspend fun getUser(@Path("id") id: Int): UserModel
 
-    @GET("users/users/")
+    @GET("api/users/users/")
     suspend fun getAllUsers(): List<UserModel>
 
     // Atualizar perfil por ID
-    @PUT("users/{id}/")
+    @PUT("users/users/{id}")
     suspend fun updateProfile(
         @Path("id") id: Int,
         @Body user: UserModel
     ): UserModel
 
     // Deletar usuário por ID
-    @DELETE("users/{id}/")
+    @DELETE("users/users/{id}/")
     suspend fun deleteUser(@Path("id") id: Int): UserModel
 }

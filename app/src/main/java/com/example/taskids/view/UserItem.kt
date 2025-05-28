@@ -1,14 +1,10 @@
 package com.example.taskids.view
-import android.R.attr.id
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -24,33 +20,51 @@ fun UserItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable { onClick(user) },
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium,
-        onClick = { onClick(user) }
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "${user.firstName.orEmpty()} ${user.lastName.orEmpty()}",
-                fontSize = 16.sp,
-                color = Color.Black
-            )
+            Column {
+                Text(
+                    text = "${user.firstName.orEmpty()} ${user.lastName.orEmpty()}".trim()
+                        .ifEmpty { user.username ?: "Usuário sem nome" },
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = Color.Black,
+                        fontSize = 16.sp
+                    )
+                )
+                if (!user.email.isNullOrEmpty()) {
+                    Text(
+                        text = user.email,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = Color.Gray,
+                            fontSize = 14.sp
+                        )
+                    )
+                }
+            }
+
             Text(
                 text = when (user.userType) {
                     UserType.GUARDIAN -> "Responsável"
                     UserType.KID -> "Filho(a)"
-                    null -> "Tipo gay"
+                    null -> "Tipo indefinido"
                 },
-                fontSize = 16.sp,
-                color = Color.Gray
+                style = MaterialTheme.typography.labelMedium.copy(
+                    color = Color.Gray,
+                    fontSize = 14.sp
+                )
             )
         }
     }

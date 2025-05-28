@@ -41,9 +41,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    NavHost(navController=navController, startDestination = "userlist") {
+                    NavHost(navController=navController, startDestination = "home") {
                         composable ( route = "home" ) { HomeScreen(navController) }
-                        composable ( route = "useerlist" ) { UserListScreen {} }
+                        composable ( route = "userlist" ) { UserListScreen (onUserClick = {user -> println("Usuário clicado: ${user.firstName} ${user.username}")}) }
                         composable ( route = "parentlogin" ) { ParentLogin(navController) }
                         composable ( route = "parentregister" ) { ParenRegister(navController) }
                         composable ( route = "parentlistchild" ) { ParentListChild(navController) }
