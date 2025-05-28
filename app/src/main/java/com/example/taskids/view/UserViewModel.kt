@@ -1,5 +1,6 @@
 package com.example.taskids.view
 
+
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,16 +23,22 @@ class UserViewModel @Inject constructor(
         fetchUsers()
     }
 
-    private fun fetchUsers() {
+    fun fetchUsers() {
         viewModelScope.launch {
             try {
-                println("Fetching users...") // Debugging log
-                _users.value = repository.getAllUsers()
-                println("Users fetched: ${_users.value}") // Debugging log
+                println("🔄 Buscando usuários...")
+                val result = repository.getAllUsers()
+                _users.value = result
+                println("✅ Usuários carregados: ${result.size}")
             } catch (e: Exception) {
-                println("Error fetching users: ${e.message}")
+                println("❌ Erro ao buscar usuários: ${e.message}")
                 e.printStackTrace()
             }
         }
+    }
+
+    // Opcional: para adicionar um usuário manualmente
+    fun addUser(user: UserModel) {
+        _users.value = _users.value + user
     }
 }
