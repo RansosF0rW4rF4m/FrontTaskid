@@ -1,23 +1,34 @@
 package com.example.taskids.view
 
-import android.R.attr.id
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskids.data.UserRepository
 import com.example.taskids.models.UserModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel : ViewModel() {
-    private val repository = UserRepository()
-    val users = MutableLiveData<List<UserModel>>()
-    val user = MutableLiveData<UserModel?>()
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val repository: UserRepository
+) : ViewModel() {
 
-    fun loadUsers() {
+    private val _users = mutableStateOf<List<UserModel>>(emptyList())
+    val users: State<List<UserModel>> = _users
+
+    init {
+        fetchUsers()
+    }
+
+    private fun fetchUsers() {
         viewModelScope.launch {
-            val response = repository.getUser(id)
-            if (response.isSuccessful) {
-                users.postValue(mutableListOf())
+            try {
+                _users.value = listOf(repository.getAllUsers())
+            } catch (e: Exception) {
+                // Tratar erro de rede, etc.
+                e.printStackTrace()
             }
         }
     }

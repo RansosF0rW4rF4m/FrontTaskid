@@ -23,9 +23,12 @@ import com.example.taskids.screens.parent.ParenRegister
 import com.example.taskids.screens.parent.ParentChildQRCode
 import com.example.taskids.screens.parent.ParentListChild
 import com.example.taskids.screens.parent.ParentRegisterScreen
+import com.example.taskids.screens.parent.UserListScreen
 import com.example.taskids.ui.theme.TaskidsTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,15 @@ class MainActivity : ComponentActivity() {
                             if (childId != null) {
                                 TaskTabsScreen(childId = childId, navController = navController)
                             }
+                        }
+
+                        composable("userList") {
+                            UserListScreen(
+                                onUserClick = { user ->
+                                    // ação ao clicar no usuário (exemplo)
+                                    println("Usuário clicado: ${user.firstName}")
+                                }
+                            )
                         }
 
                         composable("addTask/{childId}") { backStackEntry ->

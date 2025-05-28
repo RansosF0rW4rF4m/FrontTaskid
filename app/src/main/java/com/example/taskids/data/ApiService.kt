@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiService {
-    const val BASE_URL = "http://10.31.3.186:8000/api/" // Atualize com seu IP
+    const val BASE_URL = "http://10.31.0.164:8000/api/" // Atualize com seu IP
 
     // Configuração do cliente HTTP com logging
     private val httpClient by lazy {

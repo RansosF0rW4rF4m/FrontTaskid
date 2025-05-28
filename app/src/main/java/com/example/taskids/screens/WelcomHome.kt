@@ -37,7 +37,7 @@ fun HomeScreen(navController: NavHostController) {
         Text(text = "Selecione abaixo se você é \nRESPONSÁVEL ou CRIANÇA", color = Color.White, modifier = Modifier.align(Alignment.Start))
 
         CustomButton(
-            onClick = {navController.navigate("parentlogin")},
+            onClick = {navController.navigate("userlist")},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
