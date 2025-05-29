@@ -13,12 +13,17 @@ interface UserService {
     @POST("api/users/register/")
     suspend fun register(@Body user: UserModel): UserModel
 
-    // Obter perfil por ID (em vez de token)
     @GET("api/users/users/{id}/")
     suspend fun getUserById(@Path("id") id: Int): Response<UserModel>
 
     @GET("api/users/users/")
     suspend fun getAllUsers(): List<UserModel>
+
+    @PUT("api/users/users/{id}/")
+    suspend fun updateUser(
+        @Path("id") id: Int,
+        @Body user: UserModel
+    ): Response<UserModel>
 
     @POST("api/users/users/")
     suspend fun createUser(@Body user: UserModel): Response<UserModel>

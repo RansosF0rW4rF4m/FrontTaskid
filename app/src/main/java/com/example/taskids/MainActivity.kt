@@ -8,11 +8,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskids.screens.AddTaskScreen
 import com.example.taskids.screens.HomeScreen
+import com.example.taskids.screens.User.EditUserProfileScreen
 import com.example.taskids.screens.child.ChildRescopenseScreen
 import com.example.taskids.screens.parent.TaskTabsScreen
 import com.example.taskids.screens.child.ChildTaskScreen
@@ -25,6 +28,7 @@ import com.example.taskids.screens.parent.ParentRegisterScreen
 import com.example.taskids.screens.User.UserListScreen
 import com.example.taskids.screens.User.UserRegistrationScreen
 import com.example.taskids.ui.theme.TaskidsTheme
+import com.example.taskids.view.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,8 +48,18 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController=navController, startDestination = "userlist") {
                         composable ( route = "home" ) { HomeScreen(navController) }
 
-                        composable ( route = "userlist" ) { UserListScreen (navController) {user -> navController.navigate("userDetail/${user.id}")} }
+                        composable ( route = "userlist" ) { UserListScreen (navController)}
                         composable ( route = "userRegister" ) { UserRegistrationScreen(navController)}
+                        composable("editUser/{userId}") { backStackEntry ->
+                            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull()
+                            val viewModel: UserViewModel = hiltViewModel() // ✅ Inject ViewModel
+
+                            if (userId != null) {
+                                EditUserProfileScreen(navController, viewModel, userId) // ✅ Pass userId properly
+                            } else {
+                                Text("❌ Error: User ID not found") // ✅ Prevent crashes
+                            }
+                        }
 
 
                         composable ( route = "parentlogin" ) { ParentLogin(navController) }

@@ -23,9 +23,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserListScreen(
-    navController: NavController, // Pass NavController
-    viewModel: UserViewModel = hiltViewModel(),
-    onUserClick: (UserModel) -> Unit
+    navController: NavController, // ✅ Pass NavController
+    viewModel: UserViewModel = hiltViewModel()
 ) {
     val users = viewModel.users.value
     val scope = rememberCoroutineScope()
@@ -46,7 +45,7 @@ fun UserListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("userRegister") // Navigate to registration screen
+                    navController.navigate("userRegister") // ✅ Navigate to registration screen
                 },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
@@ -62,7 +61,9 @@ fun UserListScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(users) { user ->
-                UserItem(user = user, onClick = onUserClick)
+                UserItem(user = user, onClick = {
+                    navController.navigate("editUser/${user.id}") // ✅ Navigate to EditUserProfileScreen
+                })
             }
         }
     }

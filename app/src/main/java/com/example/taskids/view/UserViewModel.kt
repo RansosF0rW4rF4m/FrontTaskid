@@ -19,6 +19,9 @@ class UserViewModel @Inject constructor(
     private val _users = mutableStateOf<List<UserModel>>(emptyList())
     val users: State<List<UserModel>> = _users
 
+    private val _selectedUser = mutableStateOf<UserModel?>(null)
+    val selectedUser: State<UserModel?> = _selectedUser
+
 
     init {
         fetchUsers()
@@ -30,6 +33,29 @@ class UserViewModel @Inject constructor(
                 _users.value = repository.getAllUsers()
             } catch (e: Exception) {
                 println("❌ Erro ao buscar usuários: ${e.message}")
+            }
+        }
+    }
+
+    fun updateUser(id: Int, updatedUser: UserModel) {
+        viewModelScope.launch {
+            val success = repository.updateUser(id, updatedUser)
+            if (success) {
+                fetchUserById(id) // Refresh user data after update
+            } else {
+                println("❌ Error updating user")
+            }
+        }
+    }
+
+    fun fetchUserById(id: Int){
+        viewModelScope.launch {
+            try {
+                val user = repository.getUserById(id)
+                _selectedUser.value = user
+                println("User Stored in ViewModel: $user")
+            } catch (e: Exception) {
+                println("Erroe fetching user by ID: ${e.message}")
             }
         }
     }

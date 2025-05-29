@@ -32,15 +32,32 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun getUserById(id: Int): Boolean? {
+    suspend fun getUserById(id: Int): UserModel? {
         return try {
-            val response = service.getUserById(id)
-            response.isSuccessful
+            val response = service.getUserById(id) // API request
+            if (response.isSuccessful) response.body() else null
         } catch (e: Exception) {
-            println("❌ Exception fetching user: ${e.message}")
+            println("❌ Error fetching user: ${e.message}")
             null
         }
     }
+
+    suspend fun updateUser(id: Int, user: UserModel): Boolean {
+        return try {
+            val response = service.updateUser(id, user)
+            if (response.isSuccessful) {
+                println("User updated successfully")
+                true
+            } else {
+                println(" Error updating user: ${response.errorBody()}")
+                false
+            }
+        } catch (e: Exception) {
+            println(" Exception updating user: ${e.message}")
+            false
+        }
+    }
+
 }
 
 //    suspend fun GetChildren(): List<UserModel> {
