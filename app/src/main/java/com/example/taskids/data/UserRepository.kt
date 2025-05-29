@@ -1,6 +1,7 @@
 package com.example.taskids.data
 
 import com.example.taskids.models.UserModel
+
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -19,10 +20,22 @@ class UserRepository @Inject constructor(
 //        return service.getUser(id)
 //    }
 
-    suspend fun getAllUsers(): List<UserModel> {
-        val users = service.getAllUsers()
-        println("Users fetch: $users")
-        return users
+    suspend fun getAllUsers(): List<UserModel> = service.getAllUsers()
+
+//    suspend fun GetChildren(): List<UserModel> {
+//        return getAllUsers().filter { it.userType == UserType.KID }
+//    }
+//
+//    suspend fun GetParents(): List<UserModel> {
+//        return getAllUsers().filter { it.userType == UserType.GUARDIAN }
+//    }
+
+    fun getParentsOfChild(child: UserModel, users: List<UserModel>): List<UserModel> {
+        return users.filter { it.id in child.guardians }
+    }
+
+    fun getChildrenOfParent(parent: UserModel, users: List<UserModel>): List<UserModel> {
+        return users.filter { it.id in parent.kids }
     }
 
 //    suspend fun updateUser(id: Int, user: UserModel): UserModel {

@@ -1,4 +1,4 @@
-package com.example.taskids.screens.parent
+package com.example.taskids.screens.User
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*

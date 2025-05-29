@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskids.models.UserModel
-import com.example.taskids.models.UserType
+
 
 @Composable
 fun UserItem(
@@ -37,7 +37,7 @@ fun UserItem(
         ) {
             Column {
                 Text(
-                    text = "${user.firstName.orEmpty()} ${user.lastName.orEmpty()}".trim()
+                    text = "${user.first_name.orEmpty()} ${user.last_name.orEmpty()}".trim()
                         .ifEmpty { user.username ?: "Usuário sem nome" },
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = Color.Black,
@@ -56,10 +56,11 @@ fun UserItem(
             }
 
             Text(
-                text = when (user.userType) {
-                    UserType.GUARDIAN -> "Responsável"
-                    UserType.KID -> "Filho(a)"
-                    null -> "Tipo indefinido"
+                text = when (user.user_type) {
+                    "guardian" -> "Responsável"
+                    "kid" -> "Filho(a)"
+                    null, "" -> "Tipo indefinido"
+                    else -> "Desconhecido"
                 },
                 style = MaterialTheme.typography.labelMedium.copy(
                     color = Color.Gray,

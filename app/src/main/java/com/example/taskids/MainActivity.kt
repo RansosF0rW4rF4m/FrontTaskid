@@ -13,7 +13,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskids.screens.AddTaskScreen
 import com.example.taskids.screens.HomeScreen
-import com.example.taskids.screens.child.ChildLogin
 import com.example.taskids.screens.child.ChildRescopenseScreen
 import com.example.taskids.screens.parent.TaskTabsScreen
 import com.example.taskids.screens.child.ChildTaskScreen
@@ -23,7 +22,7 @@ import com.example.taskids.screens.parent.ParenRegister
 import com.example.taskids.screens.parent.ParentChildQRCode
 import com.example.taskids.screens.parent.ParentListChild
 import com.example.taskids.screens.parent.ParentRegisterScreen
-import com.example.taskids.screens.parent.UserListScreen
+import com.example.taskids.screens.User.UserListScreen
 import com.example.taskids.ui.theme.TaskidsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,9 +40,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    NavHost(navController=navController, startDestination = "home") {
+                    NavHost(navController=navController, startDestination = "userlist") {
                         composable ( route = "home" ) { HomeScreen(navController) }
-                        composable ( route = "userlist" ) { UserListScreen (onUserClick = {user -> println("Usuário clicado: ${user.firstName} ${user.username}")}) }
+                        composable ( route = "userlist" ) { UserListScreen (onUserClick = {user -> println("Usuário clicado: ${user.id} ${user.username} ${user.email} ${user.first_name} ${user.last_name} ${user.user_type} ${user.bio} ${user.kids}")}) }
                         composable ( route = "parentlogin" ) { ParentLogin(navController) }
                         composable ( route = "parentregister" ) { ParenRegister(navController) }
                         composable ( route = "parentlistchild" ) { ParentListChild(navController) }
