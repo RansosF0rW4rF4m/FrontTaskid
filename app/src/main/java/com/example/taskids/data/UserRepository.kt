@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val service: UserService
-){
+) {
     // Usa diretamente o userService já configurado no ApiClient
 //    suspend fun login(username: String, password: String): UserModel {
 //        return service.login(mapOf("username" to username, "password" to password))
@@ -22,6 +22,27 @@ class UserRepository @Inject constructor(
 
     suspend fun getAllUsers(): List<UserModel> = service.getAllUsers()
 
+    suspend fun createUser(user: UserModel): Boolean {
+        return try {
+            val response = service.createUser(user)
+            response.isSuccessful
+        } catch (e: Exception) {
+            println("Error creating user: ${e.message}")
+            false
+        }
+    }
+
+    suspend fun getUserById(id: Int): Boolean? {
+        return try {
+            val response = service.getUserById(id)
+            response.isSuccessful
+        } catch (e: Exception) {
+            println("❌ Exception fetching user: ${e.message}")
+            null
+        }
+    }
+}
+
 //    suspend fun GetChildren(): List<UserModel> {
 //        return getAllUsers().filter { it.userType == UserType.KID }
 //    }
@@ -30,13 +51,13 @@ class UserRepository @Inject constructor(
 //        return getAllUsers().filter { it.userType == UserType.GUARDIAN }
 //    }
 
-    fun getParentsOfChild(child: UserModel, users: List<UserModel>): List<UserModel> {
-        return users.filter { it.id in child.guardians }
-    }
+fun getParentsOfChild(child: UserModel, users: List<UserModel>): List<UserModel> {
+    return users.filter { it.id in child.guardians }
+}
 
-    fun getChildrenOfParent(parent: UserModel, users: List<UserModel>): List<UserModel> {
-        return users.filter { it.id in parent.kids }
-    }
+fun getChildrenOfParent(parent: UserModel, users: List<UserModel>): List<UserModel> {
+    return users.filter { it.id in parent.kids }
+}
 
 //    suspend fun updateUser(id: Int, user: UserModel): UserModel {
 //        return service.updateProfile(id, user)
@@ -45,4 +66,3 @@ class UserRepository @Inject constructor(
 //    suspend fun deleteUser(id: Int): UserModel {
 //        return service.deleteUser(id)
 //    }
-}

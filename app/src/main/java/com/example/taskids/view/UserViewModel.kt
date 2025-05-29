@@ -19,6 +19,7 @@ class UserViewModel @Inject constructor(
     private val _users = mutableStateOf<List<UserModel>>(emptyList())
     val users: State<List<UserModel>> = _users
 
+
     init {
         fetchUsers()
     }
@@ -26,19 +27,21 @@ class UserViewModel @Inject constructor(
     fun fetchUsers() {
         viewModelScope.launch {
             try {
-                println("🔄 Buscando usuários...")
-                val result = repository.getAllUsers()
-                _users.value = result
-                println("✅ Usuários carregados: ${result.size}")
+                _users.value = repository.getAllUsers()
             } catch (e: Exception) {
                 println("❌ Erro ao buscar usuários: ${e.message}")
-                e.printStackTrace()
             }
         }
     }
 
-    // Opcional: para adicionar um usuário manualmente
     fun addUser(user: UserModel) {
-        _users.value = _users.value + user
+        viewModelScope.launch {
+            val success = repository.createUser(user)
+            if (success) {
+                fetchUsers() // Refresh user list after adding
+            } else {
+                println("Failed to create user")
+            }
+        }
     }
 }
