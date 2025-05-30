@@ -1,7 +1,6 @@
 package com.example.taskids.data
 
 import com.example.taskids.models.UserModel
-
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -84,13 +83,13 @@ class UserRepository @Inject constructor(
 //        return getAllUsers().filter { it.userType == UserType.GUARDIAN }
 //    }
 
-fun getParentsOfChild(child: UserModel, users: List<UserModel>): List<UserModel> {
-    return users.filter { it.id in child.guardians }
-}
-
-fun getChildrenOfParent(parent: UserModel, users: List<UserModel>): List<UserModel> {
-    return users.filter { it.id in parent.kids }
-}
+//fun getParentsOfChild(child: UserModel, users: List<UserModel>): List<UserModel> {
+//    return users.filter { it.id in child.guardians }
+//}
+//
+//fun getChildrenOfParent(parent: UserModel, users: List<UserModel>): List<UserModel> {
+//    return users.filter { it.id in parent.kids }
+//}
 
 //    suspend fun updateUser(id: Int, user: UserModel): UserModel {
 //        return service.updateProfile(id, user)

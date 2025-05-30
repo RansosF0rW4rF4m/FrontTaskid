@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,7 +26,11 @@ import com.example.taskids.screens.parent.ParentListChild
 import com.example.taskids.screens.parent.ParentRegisterScreen
 import com.example.taskids.screens.User.UserListScreen
 import com.example.taskids.screens.User.UserRegistrationScreen
+import com.example.taskids.screens.task.CreateTaskScreen
+import com.example.taskids.screens.task.EditTaskScreen
+import com.example.taskids.screens.task.TaskListScreen
 import com.example.taskids.ui.theme.TaskidsTheme
+import com.example.taskids.view.TaskViewModel
 import com.example.taskids.view.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,13 +44,15 @@ class MainActivity : ComponentActivity() {
             TaskidsTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFF262466) // fundo azul escuro
+                    color = Color(0xFF262466)
                 ) {
                     val navController = rememberNavController()
 
-                    NavHost(navController=navController, startDestination = "userlist") {
+                    NavHost(navController=navController, startDestination = "home") {
                         composable ( route = "home" ) { HomeScreen(navController) }
 
+
+//                        Lista de telas de Usuario:
                         composable ( route = "userlist" ) { UserListScreen (navController)}
                         composable ( route = "userRegister" ) { UserRegistrationScreen(navController)}
                         composable("editUser/{userId}") { backStackEntry ->
@@ -62,6 +67,25 @@ class MainActivity : ComponentActivity() {
                         }
 
 
+//                        Lista de telas de Task:
+                        composable("taskList") { TaskListScreen(navController) }
+                        composable("editTask/{taskId}") { backStackEntry ->
+                            val taskId = backStackEntry.arguments?.getString("taskId")?.toIntOrNull()
+                            val viewModel: TaskViewModel = hiltViewModel()
+
+                            if (taskId != null) {
+                                EditTaskScreen(navController, viewModel, taskId) // ✅ Pass taskId properly
+                            } else {
+                                Text("❌ Error: Task ID not found")
+                            }
+                        }
+                        composable("createTask") { CreateTaskScreen(navController) }
+
+
+
+
+//                      pendente a integrar:
+
                         composable ( route = "parentlogin" ) { ParentLogin(navController) }
                         composable ( route = "parentregister" ) { ParenRegister(navController) }
                         composable ( route = "parentlistchild" ) { ParentListChild(navController) }
@@ -70,6 +94,9 @@ class MainActivity : ComponentActivity() {
 //                        composable ( route = "childlogin" ) { ChildLogin(navController) } -> Rota para habilitar o QrCode
                         composable ( route = "childhome") { ChildTaskScreen(navController) }
                         composable ( route = "childreconpense") { ChildRescopenseScreen(navController) }
+
+
+//                        Não faço a minima ideia de como integrar já que ainda não temos uma view para atribuir um usurio a outro usuario:
 
                         composable("taskList/{childId}") { backStackEntry ->
                             val childId = backStackEntry.arguments?.getString("childId")?.toIntOrNull()

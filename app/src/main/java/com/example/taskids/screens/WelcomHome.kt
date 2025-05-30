@@ -49,7 +49,7 @@ fun HomeScreen(navController: NavHostController) {
 
         CustomButton(
 //            onClick = {navController.navigate("childlogin")}, -> habilite a rota do QRCode no MainActivity
-            onClick = {navController.navigate("childhome")},
+            onClick = {navController.navigate("taskList")},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
