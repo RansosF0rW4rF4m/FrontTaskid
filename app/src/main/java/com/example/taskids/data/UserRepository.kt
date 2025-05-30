@@ -42,6 +42,22 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteUser(id: Int): Boolean {
+        return try {
+            val response = service.deleteUser(id)
+            if (response.isSuccessful) {
+                println("✅ User deleted successfully")
+                true
+            } else {
+                println("❌ Error deleting user: ${response.errorBody()?.string()}")
+                false
+            }
+        } catch (e: Exception) {
+            println("❌ Exception deleting user: ${e.message}")
+            false
+        }
+    }
+
     suspend fun updateUser(id: Int, user: UserModel): Boolean {
         return try {
             val response = service.updateUser(id, user)

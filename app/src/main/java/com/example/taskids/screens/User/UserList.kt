@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserListScreen(
-    navController: NavController, // ✅ Pass NavController
+    navController: NavController,
     viewModel: UserViewModel = hiltViewModel()
 ) {
     val users = viewModel.users.value
@@ -61,9 +61,11 @@ fun UserListScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(users) { user ->
-                UserItem(user = user, onClick = {
-                    navController.navigate("editUser/${user.id}") // ✅ Navigate to EditUserProfileScreen
-                })
+                UserItem(
+                    user = user,
+                    onClick = { navController.navigate("editUser/${user.id}") }, // ✅ Navigate to EditUserProfileScreen
+                    onDeleteClick = { viewModel.deleteUser(user.id) } // ✅ Delete user when clicking trash icon
+                )
             }
         }
     }

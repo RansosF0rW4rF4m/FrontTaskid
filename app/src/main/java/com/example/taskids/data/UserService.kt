@@ -5,13 +5,13 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface UserService {
-    // Login simplificado (sem token)
-    @POST("api/users/login/")
-    suspend fun login(@Body credentials: Map<String, String>): UserModel
-
-    // Registro (sem alteração necessária)
-    @POST("api/users/register/")
-    suspend fun register(@Body user: UserModel): UserModel
+//    // Login simplificado (sem token)
+//    @POST("api/users/login/")
+//    suspend fun login(@Body credentials: Map<String, String>): UserModel
+//
+//    // Registro (sem alteração necessária)
+//    @POST("api/users/register/")
+//    suspend fun register(@Body user: UserModel): UserModel
 
     @GET("api/users/users/{id}/")
     suspend fun getUserById(@Path("id") id: Int): Response<UserModel>
@@ -30,5 +30,5 @@ interface UserService {
 
     // Deletar usuário por ID
     @DELETE("api/users/users/{id}/")
-    suspend fun deleteUser(@Path("id") id: Int): UserModel
+    suspend fun deleteUser(@Path("id") id: Int): Response<Unit>
 }

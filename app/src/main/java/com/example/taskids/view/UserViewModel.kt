@@ -70,4 +70,13 @@ class UserViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteUser(id: Int){
+        viewModelScope.launch {
+            val sucess = repository.deleteUser(id)
+            if (sucess) {
+                fetchUsers()
+            }
+        }
+    }
 }
