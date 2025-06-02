@@ -26,7 +26,7 @@ import java.nio.file.WatchEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun SelectionScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,19 +34,26 @@ fun HomeScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "Um serviço para cadastrar seus filhos com suas tarefas!",
-            color = Color.White,
-            modifier = Modifier.align(Alignment.Start)
-        )
+        Text(text = "Selecione abaixo se você quer cadastrar um filho ou uma tarefa!", color = Color.White, modifier = Modifier.align(Alignment.Start))
 
         CustomButton(
-            onClick = { navController.navigate("parentlogin") },
+            onClick = {navController.navigate("userlist")},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
                 .padding(10.dp),
-            label = "COMEÇAR!"
+            label = "Filho"
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CustomButton(
+            onClick = {navController.navigate("taskList")},
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .padding(10.dp),
+            label = "Tarefa"
         )
     }
 }

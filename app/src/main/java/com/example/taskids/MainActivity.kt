@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskids.screens.AddTaskScreen
 import com.example.taskids.screens.HomeScreen
+import com.example.taskids.screens.SelectionScreen
 import com.example.taskids.screens.User.EditUserProfileScreen
 import com.example.taskids.screens.child.ChildRescopenseScreen
 import com.example.taskids.screens.parent.TaskTabsScreen
@@ -22,10 +23,9 @@ import com.example.taskids.screens.child.QRCodeScannerScreen
 import com.example.taskids.screens.parent.ParentLogin
 import com.example.taskids.screens.parent.ParenRegister
 import com.example.taskids.screens.parent.ParentChildQRCode
-import com.example.taskids.screens.parent.ParentListChild
 import com.example.taskids.screens.parent.ParentRegisterScreen
-import com.example.taskids.screens.User.UserListScreen
 import com.example.taskids.screens.User.UserRegistrationScreen
+import com.example.taskids.screens.parent.UserListScreen
 import com.example.taskids.screens.task.CreateTaskScreen
 import com.example.taskids.screens.task.EditTaskScreen
 import com.example.taskids.screens.task.TaskListScreen
@@ -50,6 +50,7 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController=navController, startDestination = "home") {
                         composable ( route = "home" ) { HomeScreen(navController) }
+                        composable ( route = "selection" ) { SelectionScreen(navController) }
 
 
 //                        Lista de telas de Usuario:
@@ -88,7 +89,7 @@ class MainActivity : ComponentActivity() {
 
                         composable ( route = "parentlogin" ) { ParentLogin(navController) }
                         composable ( route = "parentregister" ) { ParenRegister(navController) }
-                        composable ( route = "parentlistchild" ) { ParentListChild(navController) }
+//                        composable ( route = "parentlistchild" ) { ParentListChild(navController) }
                         composable ( route = "parentregisterchild" ) { ParentRegisterScreen(navController) }
                         composable ( route = "parentchildqrcode" ) { ParentChildQRCode(navController) }
 //                        composable ( route = "childlogin" ) { ChildLogin(navController) } -> Rota para habilitar o QrCode

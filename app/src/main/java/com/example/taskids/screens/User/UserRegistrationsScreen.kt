@@ -36,6 +36,8 @@ fun UserRegistrationScreen(
 ) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var first_name by remember { mutableStateOf("") }
+    var bio by remember { mutableStateOf("") }
     var userType by remember { mutableStateOf("guardian") } // Default is guardian
 
     Scaffold(
@@ -60,6 +62,12 @@ fun UserRegistrationScreen(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") }
+            )
+
+            TextField(
+                value = bio,
+                onValueChange = { bio = it },
+                label = { Text("Biografia") }
             )
 
             Row {
@@ -90,7 +98,7 @@ fun UserRegistrationScreen(
             Button(
                 onClick = {
                     val newUser = UserModel(
-                        id = 0, // Backend should set the actual ID
+                        id = 0,
                         username = username,
                         email = email,
                         first_name = null,

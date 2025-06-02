@@ -69,7 +69,7 @@ fun ParentLogin(navController: NavHostController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         CustomButton(
-            onClick = {navController.navigate("parentlistchild")},
+            onClick = {navController.navigate("selection")},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)

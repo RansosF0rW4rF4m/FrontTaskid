@@ -19,21 +19,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.taskids.models.TaskModel
 
 @Composable
 fun TaskItem(
     task: TaskModel,
     onClick: (TaskModel) -> Unit,
-    onDeleteClick: (Int) -> Unit
+    onDeleteClick: (Int) -> Unit,
+    userViewModel: UserViewModel = hiltViewModel() // ✅ Fetch users dynamically
 ) {
+    val assignedUser = userViewModel.users.value.find { it.id == task.assigned_to } // ✅ Find user by ID
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable { onClick(task) }, // ✅ Navigate to edit screen
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF6F6F6)),
+        elevation = CardDefaults.cardElevation(6.dp),
         shape = MaterialTheme.shapes.medium
     ) {
         Row(
@@ -41,23 +45,27 @@ fun TaskItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = task.title,
-                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
+                    style = MaterialTheme.typography.titleMedium.copy(color = Color.Black)
                 )
                 Text(
-                    text = task.description,
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                    text = assignedUser?.username ?: "Usuário desconhecido", // ✅ Show username instead of ID
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
                 )
                 Text(
                     text = if (task.completed) "✅ Concluída" else "⏳ Pendente",
-                    style = MaterialTheme.typography.labelMedium.copy(color = Color.Gray)
+                    style = MaterialTheme.typography.labelMedium.copy(color = if (task.completed) Color(0xFF34A853) else Color(0xFFE37400)),
                 )
             }
 
-            Row {
-                IconButton(onClick = { onDeleteClick(task.id) }) { // ✅ Calls delete function
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "${task.points} pts",
+                    style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFF5B8DF6))
+                )
+                IconButton(onClick = { onDeleteClick(task.id) }) {
                     androidx.compose.material3.Icon(
                         Icons.Default.Delete,
                         contentDescription = "Excluir",

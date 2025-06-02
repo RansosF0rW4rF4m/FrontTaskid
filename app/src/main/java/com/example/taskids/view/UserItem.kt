@@ -24,7 +24,7 @@ fun UserItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onClick(user) }, // ✅ Navigate to edit screen
+            .clickable { onClick(user) },
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium,
@@ -39,6 +39,10 @@ fun UserItem(
                     text = "${user.first_name.orEmpty()} ${user.last_name.orEmpty()}".trim()
                         .ifEmpty { user.username ?: "Usuário sem nome" },
                     style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black, fontSize = 16.sp)
+                )
+                Text(
+                    text = user.first_name.toString(),
+                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray, fontSize = 14.sp)
                 )
                 if (!user.email.isNullOrEmpty()) {
                     Text(
