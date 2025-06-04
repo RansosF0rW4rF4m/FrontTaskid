@@ -34,7 +34,7 @@ fun SelectionScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Selecione abaixo se você quer cadastrar um filho ou uma tarefa!", color = Color.White, modifier = Modifier.align(Alignment.Start))
+        Text(text = "Selecione abaixo se você quer cadastrar um usuario ou uma tarefa!", color = Color.White, modifier = Modifier.align(Alignment.Start))
 
         CustomButton(
             onClick = {navController.navigate("userlist")},
@@ -42,7 +42,7 @@ fun SelectionScreen(navController: NavHostController) {
                 .fillMaxWidth()
                 .height(80.dp)
                 .padding(10.dp),
-            label = "Filho"
+            label = "Usuario"
         )
 
         Spacer(modifier = Modifier.height(16.dp))
