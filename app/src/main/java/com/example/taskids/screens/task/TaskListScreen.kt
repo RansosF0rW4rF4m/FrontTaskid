@@ -96,7 +96,6 @@ fun TaskListScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Campo de busca fora da AppBar
             item {
                 TextField(
                     value = searchQuery,

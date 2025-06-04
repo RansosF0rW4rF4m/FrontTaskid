@@ -12,7 +12,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,15 +26,15 @@ fun TaskItem(
     task: TaskModel,
     onClick: (TaskModel) -> Unit,
     onDeleteClick: (Int) -> Unit,
-    userViewModel: UserViewModel = hiltViewModel() // ✅ Fetch users dynamically
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
-    val assignedUser = userViewModel.users.value.find { it.id == task.assigned_to } // ✅ Find user by ID
+    val assignedUser = userViewModel.users.value.find { it.id == task.assigned_to }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onClick(task) }, // ✅ Navigate to edit screen
+            .clickable { onClick(task) },
         colors = CardDefaults.cardColors(containerColor = Color(0xFFF6F6F6)),
         elevation = CardDefaults.cardElevation(6.dp),
         shape = MaterialTheme.shapes.medium
@@ -51,7 +50,7 @@ fun TaskItem(
                     style = MaterialTheme.typography.titleMedium.copy(color = Color.Black)
                 )
                 Text(
-                    text = assignedUser?.username ?: "Usuário desconhecido", // ✅ Show username instead of ID
+                    text = assignedUser?.username ?: "Usuário desconhecido",
                     style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
                 )
                 Text(

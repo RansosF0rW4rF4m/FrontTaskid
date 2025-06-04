@@ -38,7 +38,7 @@ fun EditTaskScreen(
     val task by viewModel.selectedTask
 
     LaunchedEffect(taskId) {
-        viewModel.fetchTaskById(taskId) // ✅ Fetch task data on screen open
+        viewModel.fetchTaskById(taskId)
     }
 
     task?.let { taskData ->
@@ -51,7 +51,7 @@ fun EditTaskScreen(
             floatingActionButton = {
                 FloatingActionButton(onClick = {
                     val updatedTask = taskData.copy(title = title, description = description, completed = completed)
-                    viewModel.updateTask(taskId, updatedTask) // ✅ Call update function
+                    viewModel.updateTask(taskId, updatedTask)
                     navController.popBackStack()
                 }) {
                     Icon(Icons.Default.Check, contentDescription = "Salvar")
@@ -74,6 +74,6 @@ fun EditTaskScreen(
             }
         }
     } ?: run {
-        Text("Carregando tarefa...") // ✅ Display loading state if task isn't available yet
+        Text("Carregando tarefa...")
     }
 }

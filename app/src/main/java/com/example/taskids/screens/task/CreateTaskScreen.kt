@@ -45,7 +45,7 @@ fun CreateTaskScreen(
     var description by remember { mutableStateOf("") }
     var completed by remember { mutableStateOf(false) }
     var points by remember { mutableStateOf("") }
-    var assigned_to by remember { mutableStateOf<Int?>(null) } // ✅ Track selected user
+    var assigned_to by remember { mutableStateOf<Int?>(null) }
     var expanded by remember { mutableStateOf(false) }
 
     val userViewModel: UserViewModel = hiltViewModel()
@@ -55,17 +55,17 @@ fun CreateTaskScreen(
         topBar = { TopAppBar(title = { Text("Criar Nova Tarefa") }) },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                val pointsInt = points.toIntOrNull() ?: 10 // ✅ Convert points to Int, default to 10 if invalid
+                val pointsInt = points.toIntOrNull() ?: 10
 
                 val newTask = TaskModel(
                     id = 0,
                     title = title,
                     description = description,
-                    assigned_to = assigned_to, // ✅ Assign task to selected user
+                    assigned_to = assigned_to,
                     completed = completed,
                     points = pointsInt
                 )
-                viewModel.createTask(newTask) // ✅ Call create function
+                viewModel.createTask(newTask)
                 navController.popBackStack()
             }) {
                 Icon(Icons.Default.Check, contentDescription = "Criar")
@@ -95,7 +95,6 @@ fun CreateTaskScreen(
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
-            // ✅ Dropdown for selecting assigned user
             Text("Atribuir a:")
             Box {
                 Button(onClick = { expanded = true }) {
@@ -104,14 +103,14 @@ fun CreateTaskScreen(
 
                 DropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false } // ✅ Close menu when clicking outside
+                    onDismissRequest = { expanded = false }
                 ) {
                     users.forEach { user ->
                         DropdownMenuItem(
                             text = { Text(user.username.toString()) },
                             onClick = {
-                                assigned_to = user.id // ✅ Set selected user
-                                expanded = false // ✅ Close dropdown after selection
+                                assigned_to = user.id
+                                expanded = false
                             }
                         )
                     }

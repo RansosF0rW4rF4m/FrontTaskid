@@ -9,8 +9,8 @@ data class UserModel(
     val email: String?,
     val first_name: String?,
     @SerialName("last_name") val last_name: String?,
-    @SerialName("user_type") val user_type: String?, // "kid" ou "guardian"
+    @SerialName("user_type") val user_type: String?,
     val bio: String? = null,
-    val kids: List<Int>,   // Só preenchido se for Guardian
-    val guardians: List<Int>  // Só preenchido se for Kid
+    val kids: List<Int>,
+    val guardians: List<Int>
 )

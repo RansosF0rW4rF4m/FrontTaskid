@@ -18,7 +18,7 @@ import com.example.taskids.models.UserModel
 fun UserItem(
     user: UserModel,
     onClick: (UserModel) -> Unit,
-    onDeleteClick: (Int) -> Unit // ✅ Pass user ID for deletion
+    onDeleteClick: (Int) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -53,7 +53,7 @@ fun UserItem(
             }
 
             Row {
-                IconButton(onClick = { onDeleteClick(user.id) }) { // ✅ Calls delete function
+                IconButton(onClick = { onDeleteClick(user.id) }) {
                     Icon(Icons.Default.Delete, contentDescription = "Excluir", tint = Color.Red)
                 }
             }

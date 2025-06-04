@@ -56,8 +56,7 @@ fun AddTaskScreen(childId: Int, navController: NavController) {
 
         Button(
             onClick = {
-                // Salvar tarefa no banco ou viewModel
-                navController.popBackStack() // Volta para a tela anterior
+                navController.popBackStack()
             },
             modifier = Modifier.align(Alignment.End)
         ) {

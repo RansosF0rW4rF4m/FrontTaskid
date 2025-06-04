@@ -39,7 +39,7 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             val success = repository.updateUser(id, updatedUser)
             if (success) {
-                fetchUserById(id) // Refresh user data after update
+                fetchUserById(id)
             } else {
                 println("❌ Error updating user")
             }
@@ -62,7 +62,7 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             val success = repository.createUser(user)
             if (success) {
-                fetchUsers() // Refresh user list after adding
+                fetchUsers()
             } else {
                 println("Failed to create user")
             }

@@ -25,6 +25,6 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideTaskService(apiService: ApiService): TaskService {
-        return apiService.retrofit.create(TaskService::class.java) // ✅ Provide TaskService
+        return apiService.retrofit.create(TaskService::class.java)
     }
 }

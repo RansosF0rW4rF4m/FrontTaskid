@@ -12,7 +12,6 @@ class ApiService @Inject constructor() {
     companion object {
 //        const val BASE_URL = "http://15.228.245.85:8000/"
         const val BASE_URL = "http://192.168.2.131:8000"
-//        MUDAR ESSA ROTA DE ACORDO COM O IP DO COMPUTADOR
     }
 
     private val httpClient: OkHttpClient by lazy {
