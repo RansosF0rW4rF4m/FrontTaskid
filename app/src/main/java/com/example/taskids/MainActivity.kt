@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                             val viewModel: TaskViewModel = hiltViewModel()
 
                             if (taskId != null) {
-                                EditTaskScreen(navController, viewModel, taskId) // ✅ Pass taskId properly
+                                EditTaskScreen(navController, viewModel, taskId)
                             } else {
                                 Text("❌ Error: Task ID not found")
                             }
