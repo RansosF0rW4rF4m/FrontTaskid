@@ -1,5 +1,6 @@
 package com.example.taskids.screens.parent
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.compose.ui.text.font.FontWeight
 import com.example.taskids.components.CustomButton
 import com.example.taskids.components.MyTextField
 import com.example.taskids.components.MyTextFieldPassword
@@ -37,10 +39,26 @@ fun ParentLogin(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = "Bem-vindo",
+            color = Color(0xFFE59900),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            text = "Entre e mantenha o controle",
+            color = Color.Black,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Normal
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
 
         MyTextField(
             value = email,
@@ -48,7 +66,7 @@ fun ParentLogin(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Seu Email",
+            label = "Digite seu email",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
@@ -61,7 +79,7 @@ fun ParentLogin(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Seu Email",
+            label = "Digite sua senha",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
@@ -74,21 +92,22 @@ fun ParentLogin(navController: NavHostController) {
                 .fillMaxWidth()
                 .height(80.dp)
                 .padding(10.dp),
-            label = "LOGAR"
+            label = "Entrar"
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = "não possui conta? ",
-            color = Color.White,
+            color = Color(0xFFE59900),
             fontSize = 14.sp
         )
 
         Text(
             text = "clique aqui",
-            color = Color.Cyan,
+            color = Color(0xFFE59900),
             fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .clickable {
                     navController.navigate("parentregister")

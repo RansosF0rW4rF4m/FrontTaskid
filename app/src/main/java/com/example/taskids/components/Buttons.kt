@@ -22,8 +22,8 @@ fun CustomButton(
         modifier = modifier,
         shape = RoundedCornerShape(15.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF00A000),
-            contentColor = Color.White
+            containerColor = Color(0xFFE59900),
+                    contentColor = Color.White
         )
 
     ) {

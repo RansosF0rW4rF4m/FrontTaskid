@@ -59,26 +59,26 @@ fun UserListScreen(
     }
 
     Scaffold(
-        containerColor = Color(0xFF2C2C6B),
-        topBar = {
+        containerColor = Color.White,
+                topBar = {
             TopAppBar(
                 title = {
                     Text(
                         text = "Lista de Usuários",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.Black
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF2C2C6B)
+                    containerColor = Color.White
                 ),
                 actions = {
                     IconButton(onClick = { scope.launch { viewModel.fetchUsers() } }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = "Atualizar",
-                            tint = Color.White
+                            tint = Color.Black
                         )
                     }
                 }

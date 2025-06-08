@@ -1,5 +1,6 @@
 package com.example.taskids.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,11 +24,12 @@ fun SelectionScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Selecione abaixo se você quer cadastrar um usuario ou uma tarefa!", color = Color.White, modifier = Modifier.align(Alignment.Start))
+        Text(text = "Selecione abaixo se você quer cadastrar um usuario ou uma tarefa!", color = Color.Black, modifier = Modifier.align(Alignment.Start))
 
         CustomButton(
             onClick = {navController.navigate("userlist")},
@@ -35,7 +37,7 @@ fun SelectionScreen(navController: NavHostController) {
                 .fillMaxWidth()
                 .height(80.dp)
                 .padding(10.dp),
-            label = "Usuario"
+            label = "Usuário"
         )
 
         Spacer(modifier = Modifier.height(16.dp))

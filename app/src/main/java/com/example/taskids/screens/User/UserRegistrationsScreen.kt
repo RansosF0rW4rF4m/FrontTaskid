@@ -1,5 +1,6 @@
 package com.example.taskids.screens.User
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.taskids.models.UserModel
 import com.example.taskids.view.UserViewModel
+import androidx.compose.ui.Alignment
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,33 +45,45 @@ fun UserRegistrationScreen(
     var userType by remember { mutableStateOf("guardian") } // Default is guardian
 
     Scaffold(
+        containerColor = Color.White,
         topBar = {
-            TopAppBar(title = { Text("Registrar Usuário") })
+            TopAppBar(title = { Text("Registrar Usuário", color = Color.Black) },
+                colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White))
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+
         ) {
             TextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Nome do Usuário") }
+                label = { Text("Nome do Usuário") },
+                modifier = Modifier.fillMaxWidth(0.8f)
+
             )
 
             TextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") }
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth(0.8f)
+
             )
 
             TextField(
                 value = bio,
                 onValueChange = { bio = it },
-                label = { Text("Biografia") }
+                label = { Text("Biografia") },
+                modifier = Modifier.fillMaxWidth(0.8f)
+
             )
 
             Row {
@@ -94,7 +110,7 @@ fun UserRegistrationScreen(
                     Text("Filho(a)")
                 }
             }
-
+            Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
                     val newUser = UserModel(
@@ -110,8 +126,12 @@ fun UserRegistrationScreen(
                     )
                     viewModel.addUser(newUser)
                     navController.popBackStack() // Return to previous screen
-                }
-            ) {
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE59900),
+                    contentColor = Color.White
+                ),
+                modifier = Modifier.fillMaxWidth(0.5f)) {
                 Text("Cadastrar Usuário")
             }
         }

@@ -1,5 +1,6 @@
 package com.example.taskids.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,13 +23,14 @@ fun HomeScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = "Um serviço para cadastrar seus filhos com suas tarefas!",
-            color = Color.White,
+            color = Color.Black,
             modifier = Modifier.align(Alignment.Start)
         )
 
@@ -38,7 +40,7 @@ fun HomeScreen(navController: NavHostController) {
                 .fillMaxWidth()
                 .height(80.dp)
                 .padding(10.dp),
-            label = "COMEÇAR!"
+            label = "Começar!"
         )
     }
 }
