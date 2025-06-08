@@ -40,7 +40,6 @@ fun EditUserProfileScreen(
 
     user?.let { userData ->
         var username by remember { mutableStateOf(userData.username ?: "") }
-        var first_name by remember { mutableStateOf(userData.first_name ?: "") }
         var email by remember { mutableStateOf(userData.email ?: "") }
 
         Scaffold(
@@ -63,7 +62,6 @@ fun EditUserProfileScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 TextField(value = username, onValueChange = { username = it }, label = { Text("Nome de Usuario") })
-                TextField(value = first_name, onValueChange = { first_name = it }, label = { Text("Nome") })
                 TextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
             }
         }

@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.taskids.view.TaskItem
 import com.example.taskids.view.TaskViewModel
+import com.example.taskids.view.UserViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -40,7 +41,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TaskListScreen(
     navController: NavController,
-    viewModel: TaskViewModel = hiltViewModel()
+    viewModel: TaskViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
     val tasks = viewModel.tasks.value
     val scope = rememberCoroutineScope()
@@ -49,9 +51,16 @@ fun TaskListScreen(
     var showCompletedTasks by remember { mutableStateOf(false) }
 
     val filteredTasks = tasks.filter { task ->
-        (task.title.contains(searchQuery, ignoreCase = true) ||
-                task.description.contains(searchQuery, ignoreCase = true)) &&
-                (!showCompletedTasks || task.completed)
+        val assignedUser = userViewModel.users.value.find { it.id == task.assigned_to }
+        val assignedUsername = assignedUser?.username ?: ""
+
+        val query = searchQuery.trim().lowercase()
+
+        val matchesQuery = task.title.contains(query, ignoreCase = true) ||
+                task.description.contains(query, ignoreCase = true) ||
+                assignedUsername.contains(query, ignoreCase = true)
+
+        matchesQuery && (!showCompletedTasks || task.completed)
     }
 
     Scaffold(
@@ -100,7 +109,7 @@ fun TaskListScreen(
                 TextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Pesquisar Tarefa") },
+                    label = { Text("Pesquisar Tarefa ou Usuário") },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = 8.dp)
@@ -117,5 +126,3 @@ fun TaskListScreen(
         }
     }
 }
-
-

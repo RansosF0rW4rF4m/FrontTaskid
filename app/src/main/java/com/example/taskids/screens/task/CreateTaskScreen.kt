@@ -45,7 +45,7 @@ fun CreateTaskScreen(
     var description by remember { mutableStateOf("") }
     var completed by remember { mutableStateOf(false) }
     var points by remember { mutableStateOf("") }
-    var assigned_to by remember { mutableStateOf<Int?>(null) }
+    var assigned_to by remember { mutableStateOf<String?>(null) }
     var expanded by remember { mutableStateOf(false) }
 
     val userViewModel: UserViewModel = hiltViewModel()
@@ -56,12 +56,14 @@ fun CreateTaskScreen(
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 val pointsInt = points.toIntOrNull() ?: 10
+                val assignedUser = users.find { it.username == assigned_to } // ✅ Find user by username
+                val assignedUserId = assignedUser?.id
 
                 val newTask = TaskModel(
                     id = 0,
                     title = title,
                     description = description,
-                    assigned_to = assigned_to,
+                    assigned_to = assignedUserId,
                     completed = completed,
                     points = pointsInt
                 )
@@ -98,7 +100,7 @@ fun CreateTaskScreen(
             Text("Atribuir a:")
             Box {
                 Button(onClick = { expanded = true }) {
-                    Text(if (assigned_to == null) "Selecionar Criança" else "Usuário ID: ${assigned_to}")
+                    Text(if (assigned_to == null) "Selecionar Criança" else "Usuário: ${assigned_to}")
                 }
 
                 DropdownMenu(
@@ -109,7 +111,7 @@ fun CreateTaskScreen(
                         DropdownMenuItem(
                             text = { Text(user.username.toString()) },
                             onClick = {
-                                assigned_to = user.id
+                                assigned_to = user.username
                                 expanded = false
                             }
                         )
