@@ -101,7 +101,7 @@ fun ParentRegisterScreen(navController: NavController) {
         )
 
         Text(
-            text = "Entrar",
+            text = "ENTRAR",
             color = Color.Blue,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
