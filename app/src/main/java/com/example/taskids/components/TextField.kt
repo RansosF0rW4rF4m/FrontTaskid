@@ -34,6 +34,8 @@ fun MyTextField(
             focusedLabelColor = Color(0xFF969696),
             unfocusedBorderColor = Color(0xFF969696),
             unfocusedLabelColor = Color(0xFF969696),
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black,
             cursorColor = Color.White,
         ),
         shape = ShapeTextEdit.small,
@@ -67,11 +69,14 @@ fun MyTextFieldPassword(
             focusedLabelColor = Color(0xFF969696),
             unfocusedBorderColor = Color(0xFF969696),
             unfocusedLabelColor = Color(0xFF969696),
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black,
             cursorColor = Color.White,
         ),
         shape = ShapeTextEdit.small,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType
-        )
+        ),
+
     )
 }
