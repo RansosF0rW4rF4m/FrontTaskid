@@ -1,4 +1,5 @@
 package com.example.taskids.screens.parent
+
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -6,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,12 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,6 +27,10 @@ import androidx.navigation.NavController
 import com.example.taskids.view.UserItem
 import com.example.taskids.view.UserViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.snapshotFlow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,11 +41,11 @@ fun UserListScreen(
 ) {
     val users = viewModel.users.value
     val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState() // ✅ Track scroll position
 
     var searchQuery by remember { mutableStateOf("") }
     var selectedUserType by remember { mutableStateOf("Todos") }
 
-    // Mapeamento: rótulo visível → valor real
     val userTypeLabels = mapOf(
         "Todos" to "Todos",
         "Responsável" to "guardian",
@@ -62,9 +64,19 @@ fun UserListScreen(
         matchesQuery && matchesType
     }
 
+    // ✅ Fetch users when scrolling near the end of the list
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastVisibleIndex ->
+                if (lastVisibleIndex != null && lastVisibleIndex >= users.size - 2) {
+                    scope.launch { viewModel.fetchUsers() } // ✅ Fetch only when near bottom
+                }
+            }
+    }
+
     Scaffold(
         containerColor = Color.White,
-                topBar = {
+        topBar = {
             TopAppBar(
                 title = {
                     Text(
@@ -76,16 +88,7 @@ fun UserListScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White
-                ),
-                actions = {
-                    IconButton(onClick = { scope.launch { viewModel.fetchUsers() } }) {
-                        Icon(
-                            imageVector = Icons.Default.Refresh,
-                            contentDescription = "Atualizar",
-                            tint = Color.Black
-                        )
-                    }
-                }
+                )
             )
         },
         floatingActionButton = {
@@ -137,7 +140,9 @@ fun UserListScreen(
             // Botões de filtro por tipo de usuário (com rótulos customizados)
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
             ) {
                 userTypeLabels.forEach { (label, value) ->
                     val selected = selectedUserType == value
@@ -160,8 +165,8 @@ fun UserListScreen(
                 }
             }
 
-            // Lista de usuários
             LazyColumn(
+                state = listState, // ✅ Attach scroll tracking
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {

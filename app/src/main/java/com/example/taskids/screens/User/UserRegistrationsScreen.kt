@@ -48,9 +48,8 @@ fun UserRegistrationScreen(
 ) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var first_name by remember { mutableStateOf("") }
     var bio by remember { mutableStateOf("") }
-    var userType by remember { mutableStateOf("guardian") } // Default is guardian
+    var userType by remember { mutableStateOf("guardian") }
 
     val textFieldShape = RoundedCornerShape(8.dp)
     val shadowElevation = 8.dp
@@ -191,7 +190,6 @@ fun UserRegistrationScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-// Row com os botões divididos meio a meio
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -204,7 +202,7 @@ fun UserRegistrationScreen(
                         containerColor = if (userType == "guardian") Color(0xFFE8A319) else Color.Gray,
                         contentColor = Color.White
                     ),
-                    modifier = Modifier.weight(1f)  // ocupa metade da linha
+                    modifier = Modifier.weight(1f)
                 ) {
                     Text("Responsável")
                 }
@@ -215,7 +213,7 @@ fun UserRegistrationScreen(
                         containerColor = if (userType == "kid") Color(0xFFE8A319) else Color.Gray,
                         contentColor = Color.White
                     ),
-                    modifier = Modifier.weight(1f)  // ocupa metade da linha
+                    modifier = Modifier.weight(1f)
                 ) {
                     Text("Filho(a)")
                 }
@@ -235,7 +233,7 @@ fun UserRegistrationScreen(
                         guardians = emptyList()
                     )
                     viewModel.addUser(newUser)
-                    navController.popBackStack() // Return to previous screen
+                    navController.popBackStack()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFE8A319),
