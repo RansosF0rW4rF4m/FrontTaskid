@@ -105,7 +105,7 @@ fun ParentLogin(navController: NavHostController) {
 
         Text(
             text = "CLICK AQUI",
-            color = Color.Blue,
+            color = Color(0xFFE59900),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier

@@ -102,7 +102,7 @@ fun ParentRegisterScreen(navController: NavController) {
 
         Text(
             text = "ENTRAR",
-            color = Color.Blue,
+            color = Color(0xFFE59900),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.clickable {
