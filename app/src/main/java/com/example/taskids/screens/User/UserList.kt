@@ -14,9 +14,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,9 +69,9 @@ fun UserListScreen(
                 title = {
                     Text(
                         text = "Lista de Usuários",
-                        fontSize = 20.sp,
+                        fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black
+                        color = Color(0xFFE59900),
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -87,9 +91,14 @@ fun UserListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("userRegister") },
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = Color(0xFFE59900),
+                modifier = Modifier.clip(CircleShape)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Adicionar Usuário")
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "Adicionar Usuário",
+                    tint = Color.White
+                )
             }
         }
     ) { paddingValues ->
@@ -104,9 +113,25 @@ fun UserListScreen(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 label = { Text("Pesquisar por Nome ou Email") },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedLabelColor = Color.Gray,
+                    unfocusedLabelColor = Color.Gray,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = MaterialTheme.shapes.small,
+                        clip = false
+                    )
             )
 
             // Botões de filtro por tipo de usuário (com rótulos customizados)
@@ -120,7 +145,8 @@ fun UserListScreen(
                     Button(
                         onClick = { selectedUserType = value },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (selected) MaterialTheme.colorScheme.primary else Color.LightGray
+                            containerColor = if (selected) Color(0xFFE8A319) else Color.LightGray,
+                            contentColor = if (selected) Color.White else Color.Black
                         ),
                         border = if (selected) BorderStroke(2.dp, Color.White) else null,
                         modifier = Modifier.weight(1f)
@@ -130,6 +156,7 @@ fun UserListScreen(
                             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
                         )
                     }
+
                 }
             }
 
