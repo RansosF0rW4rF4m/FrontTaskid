@@ -52,7 +52,7 @@ fun ParentLogin(navController: NavHostController) {
         )
 
         Text(
-            text = "Entre e mantenha o controle",
+            text = "Entre e mantenha o controle!",
             color = Color.Black,
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal
@@ -104,7 +104,7 @@ fun ParentLogin(navController: NavHostController) {
         )
 
         Text(
-            text = "CLICK AQUI",
+            text = "CLIQUE AQUI",
             color = Color(0xFFE59900),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
