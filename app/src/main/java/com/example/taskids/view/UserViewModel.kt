@@ -20,9 +20,40 @@ class UserViewModel @Inject constructor(
     private val _selectedUser = mutableStateOf<UserModel?>(null)
     val selectedUser: State<UserModel?> = _selectedUser
 
+    private val _loginSuccess = mutableStateOf<Boolean?>(null)  // ✅ Track login state
+    val loginSuccess: State<Boolean?> = _loginSuccess
+
+    private val _registrationSuccess = mutableStateOf<Boolean?>(null)  // ✅ Track registration state
+    val registrationSuccess: State<Boolean?> = _registrationSuccess
+
 
     init {
         fetchUsers()
+    }
+
+    fun loginUser(usernameOrEmail: String, password: String) {
+        viewModelScope.launch {
+            val success = repository.loginUser(usernameOrEmail, password)
+            _loginSuccess.value = success // ✅ Update login state
+            if (success) {
+                println("✅ Login successful!")
+            } else {
+                println("❌ Invalid credentials.")
+            }
+        }
+    }
+
+
+    fun registerUser(username: String, email: String, password: String, userType: String) {
+        viewModelScope.launch {
+            val success = repository.registerUser(username, email, password, userType)
+            _registrationSuccess.value = success // ✅ Update registration state
+            if (success) {
+                println("✅ Registration complete!")
+            } else {
+                println("❌ Registration failed.")
+            }
+        }
     }
 
     fun fetchUsers() {
@@ -77,4 +108,6 @@ class UserViewModel @Inject constructor(
             }
         }
     }
+
+    companion object
 }

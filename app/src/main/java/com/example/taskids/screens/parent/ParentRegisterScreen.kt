@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,17 +27,26 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.taskids.components.CustomButton
 import com.example.taskids.components.MyTextField
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.taskids.components.MyTextFieldPassword
+import com.example.taskids.view.UserViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentRegisterScreen(navController: NavController) {
-    var name by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var registrationMessage by remember { mutableStateOf("") } // ✅ Store feedback message
+    val scope = rememberCoroutineScope()
+    val userViewModel: UserViewModel = hiltViewModel() // ✅ Inject ViewModel
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White) // ✅ Unified background color
+            .background(Color.White)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -48,22 +58,15 @@ fun ParentRegisterScreen(navController: NavController) {
             fontWeight = FontWeight.Bold
         )
 
-        Text(
-            text = "Crie sua conta para gerenciar tarefas",
-            color = Color.Black,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Normal
-        )
-
         Spacer(modifier = Modifier.height(32.dp))
 
         MyTextField(
-            value = name,
-            onValueChange = { name = it },
+            value = username,
+            onValueChange = { username = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Nome",
+            label = "Usuario",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
@@ -71,12 +74,25 @@ fun ParentRegisterScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         MyTextField(
-            value = age,
-            onValueChange = { age = it },
+            value = email,
+            onValueChange = { email = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Idade",
+            label = "Email",
+            maxLines = 1,
+            keyboardType = KeyboardType.Text
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        MyTextField(
+            value = password,
+            onValueChange = { password = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp, 20.dp, 20.dp, 0.dp),
+            label = "Senha",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
@@ -84,25 +100,47 @@ fun ParentRegisterScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         CustomButton(
-            onClick = { navController.navigate("parentchildqrcode") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .padding(10.dp),
+            onClick = {
+                scope.launch {
+                    userViewModel.registerUser(username, email, password, "guardian")
+                }
+            },
+            modifier = Modifier.fillMaxWidth().height(80.dp).padding(10.dp),
             label = "CADASTRAR"
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // ✅ Observe registration status and navigate only on success
+        LaunchedEffect(userViewModel.registrationSuccess.value) {
+            userViewModel.registrationSuccess.value?.let { success ->
+                if (success) {
+                    navController.navigate("parentlogin") // ✅ Navigate when registration succeeds
+                } else {
+                    registrationMessage = "❌ Falha no cadastro. Tente novamente!"
+                }
+            }
+        }
+
+        Text(
+            text = registrationMessage,
+            color = if (registrationMessage.startsWith("✅")) Color.Green else Color.Red,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Já possui uma conta? ",
+            text = "Já possui uma conta?",
             color = Color(0xFFE59900),
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
             text = "ENTRAR",
-            color = Color(0xFFE59900),
+            color = Color.Blue,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.clickable {
@@ -111,3 +149,4 @@ fun ParentRegisterScreen(navController: NavController) {
         )
     }
 }
+

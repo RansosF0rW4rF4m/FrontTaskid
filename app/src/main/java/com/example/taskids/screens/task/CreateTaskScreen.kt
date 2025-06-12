@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
@@ -35,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -80,7 +82,7 @@ fun CreateTaskScreen(
             FloatingActionButton(
                 onClick = {
                     val pointsInt = points.toIntOrNull() ?: 10
-                    val assignedUser = users.find { it.username == assigned_to } // ✅ Find user by username
+                    val assignedUser = users.find { it.username == assigned_to }
                     val assignedUserId = assignedUser?.id
 
                     val newTask = TaskModel(
@@ -88,7 +90,7 @@ fun CreateTaskScreen(
                         title = title,
                         description = description,
                         assigned_to = assignedUserId,
-                        completed = false, // ✅ Default to incomplete
+                        completed = false,
                         points = pointsInt
                     )
                     viewModel.createTask(newTask)
@@ -121,7 +123,7 @@ fun CreateTaskScreen(
             TextField(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text("Nome do Usuário") },
+                label = { Text("Titulo") },
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .shadow(
@@ -151,7 +153,7 @@ fun CreateTaskScreen(
             TextField(
                 value = description,
                 onValueChange = { description = it },
-                label = { Text("Nome do Usuário") },
+                label = { Text("Descrição") },
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .shadow(
@@ -181,7 +183,7 @@ fun CreateTaskScreen(
             TextField(
                 value = points,
                 onValueChange = { points = it },
-                label = { Text("Nome do Usuário") },
+                label = { Text("Pontos") },
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .shadow(
@@ -189,6 +191,7 @@ fun CreateTaskScreen(
                         shape = textFieldShape,
                         clip = false
                     ),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,

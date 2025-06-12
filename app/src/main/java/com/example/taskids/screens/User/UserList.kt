@@ -29,7 +29,6 @@ import com.example.taskids.view.UserViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.snapshotFlow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,7 +40,7 @@ fun UserListScreen(
 ) {
     val users = viewModel.users.value
     val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState() // ✅ Track scroll position
+    val listState = rememberLazyListState()
 
     var searchQuery by remember { mutableStateOf("") }
     var selectedUserType by remember { mutableStateOf("Todos") }
@@ -64,12 +63,11 @@ fun UserListScreen(
         matchesQuery && matchesType
     }
 
-    // ✅ Fetch users when scrolling near the end of the list
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleIndex ->
                 if (lastVisibleIndex != null && lastVisibleIndex >= users.size - 2) {
-                    scope.launch { viewModel.fetchUsers() } // ✅ Fetch only when near bottom
+                    scope.launch { viewModel.fetchUsers() }
                 }
             }
     }
@@ -111,7 +109,6 @@ fun UserListScreen(
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
-            // Campo único para busca por nome ou email
             TextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
@@ -137,7 +134,6 @@ fun UserListScreen(
                     )
             )
 
-            // Botões de filtro por tipo de usuário (com rótulos customizados)
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
@@ -166,7 +162,7 @@ fun UserListScreen(
             }
 
             LazyColumn(
-                state = listState, // ✅ Attach scroll tracking
+                state = listState,
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {

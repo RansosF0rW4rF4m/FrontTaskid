@@ -12,11 +12,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,7 +43,6 @@ import com.example.taskids.view.UserViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.LaunchedEffect
-
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.snapshotFlow
@@ -61,7 +58,7 @@ fun TaskListScreen(
 ) {
     val tasks = viewModel.tasks.value
     val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState() // ✅ Track scroll position
+    val listState = rememberLazyListState()
 
     var searchQuery by remember { mutableStateOf("") }
     var showCompletedTasks by remember { mutableStateOf(false) }
@@ -76,15 +73,14 @@ fun TaskListScreen(
                 task.description.contains(query, ignoreCase = true) ||
                 assignedUsername.contains(query, ignoreCase = true)
 
-        matchesQuery && (showCompletedTasks || !task.completed) // ✅ Show only incomplete by default
+        matchesQuery && (showCompletedTasks || !task.completed)
     }
 
-    // ✅ Fetch tasks when scrolling near the end of the list
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleIndex ->
                 if (lastVisibleIndex != null && lastVisibleIndex >= tasks.size - 2) {
-                    scope.launch { viewModel.fetchTasks() } // ✅ Auto-refresh
+                    scope.launch { viewModel.fetchTasks() }
                 }
             }
     }
@@ -115,7 +111,7 @@ fun TaskListScreen(
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(
-                            text = if (showCompletedTasks) "✅" else "❌", // ✅ Dynamic label
+                            text = if (showCompletedTasks) "✅" else "❌",
                             color = Color.Black,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
@@ -171,7 +167,7 @@ fun TaskListScreen(
             )
 
             LazyColumn(
-                state = listState, // ✅ Attach scroll tracking
+                state = listState,
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {

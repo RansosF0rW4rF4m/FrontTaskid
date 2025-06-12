@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,13 +28,19 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.taskids.components.CustomButton
 import com.example.taskids.components.MyTextField
 import com.example.taskids.components.MyTextFieldPassword
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
+import com.example.taskids.view.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentLogin(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val context = LocalContext.current
+    var loginMessage by remember { mutableStateOf("") } // ✅ Store feedback message
+    val scope = rememberCoroutineScope()
+    val userViewModel: UserViewModel = hiltViewModel() // ✅ Inject ViewModel
 
     Column(
         modifier = Modifier
@@ -51,13 +57,6 @@ fun ParentLogin(navController: NavHostController) {
             fontWeight = FontWeight.Bold
         )
 
-        Text(
-            text = "Entre e mantenha o controle",
-            color = Color.Black,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Normal
-        )
-
         Spacer(modifier = Modifier.height(32.dp))
 
         MyTextField(
@@ -66,7 +65,7 @@ fun ParentLogin(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Digite seu email",
+            label = "email",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
@@ -79,7 +78,7 @@ fun ParentLogin(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Digite sua senha",
+            label = "password",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
@@ -87,32 +86,49 @@ fun ParentLogin(navController: NavHostController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         CustomButton(
-            onClick = {navController.navigate("selection")},
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .padding(10.dp),
+            onClick = {
+                userViewModel.loginUser(email, password) // ✅ Call login API
+            },
+            modifier = Modifier.fillMaxWidth().height(80.dp).padding(10.dp),
             label = "Entrar"
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LaunchedEffect(userViewModel.loginSuccess.value) {
+            userViewModel.loginSuccess.value?.let { success ->
+                if (success) {
+                    navController.navigate("selection") // ✅ Navigate when login succeeds
+                } else {
+                    loginMessage = "❌ Credenciais inválidas. Tente novamente!"
+                }
+            }
+        }
+
+        Text(
+            text = loginMessage,
+            color = if (loginMessage.startsWith("✅")) Color.Green else Color.Red,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "não possui conta? ",
+            text = "Não possui conta?",
             color = Color(0xFFE59900),
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
             text = "CLICK AQUI",
-            color = Color(0xFFE59900),
+            color = Color.Blue,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .clickable {
-                    navController.navigate("parentregister")
-                }
+            modifier = Modifier.clickable {
+                navController.navigate("parentregister")
+            }
         )
     }
 }
-

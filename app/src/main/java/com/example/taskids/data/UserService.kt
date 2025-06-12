@@ -6,6 +6,13 @@ import retrofit2.http.*
 
 interface UserService {
 
+    @POST("api/users/register/")
+    suspend fun registerUser(@Body request: RegisterRequest): Response<AuthResponse>
+
+    // ✅ Login User
+    @POST("api/users/login/")
+    suspend fun loginUser(@Body request: LoginRequest): Response<AuthResponse>
+
    @GET("api/users/users/{id}/")
     suspend fun getUserById(@Path("id") id: Int): Response<UserModel>
 
