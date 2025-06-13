@@ -36,7 +36,7 @@ import com.example.taskids.view.UserViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentLogin(navController: NavHostController) {
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var loginMessage by remember { mutableStateOf("") } // ✅ Store feedback message
     val scope = rememberCoroutineScope()
@@ -60,8 +60,8 @@ fun ParentLogin(navController: NavHostController) {
         Spacer(modifier = Modifier.height(32.dp))
 
         MyTextField(
-            value = email,
-            onValueChange = { email = it },
+            value = username,
+            onValueChange = { username = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
@@ -87,7 +87,7 @@ fun ParentLogin(navController: NavHostController) {
 
         CustomButton(
             onClick = {
-                userViewModel.loginUser(email, password) // ✅ Call login API
+                userViewModel.loginUser(username, password) // ✅ Call login API
             },
             modifier = Modifier.fillMaxWidth().height(80.dp).padding(10.dp),
             label = "Entrar"

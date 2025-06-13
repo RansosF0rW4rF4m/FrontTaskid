@@ -37,7 +37,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun ParentRegisterScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var registrationMessage by remember { mutableStateOf("") } // ✅ Store feedback message
     val scope = rememberCoroutineScope()
@@ -74,19 +73,6 @@ fun ParentRegisterScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         MyTextField(
-            value = email,
-            onValueChange = { email = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Email",
-            maxLines = 1,
-            keyboardType = KeyboardType.Text
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        MyTextField(
             value = password,
             onValueChange = { password = it },
             modifier = Modifier
@@ -102,7 +88,7 @@ fun ParentRegisterScreen(navController: NavController) {
         CustomButton(
             onClick = {
                 scope.launch {
-                    userViewModel.registerUser(username, email, password, "guardian")
+                    userViewModel.registerUser(username, password, "guardian")
                 }
             },
             modifier = Modifier.fillMaxWidth().height(80.dp).padding(10.dp),

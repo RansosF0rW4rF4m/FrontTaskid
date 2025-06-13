@@ -9,9 +9,9 @@ class UserRepository @Inject constructor(
 
     suspend fun getAllUsers(): List<UserModel> = service.getAllUsers()
 
-    suspend fun loginUser(email: String, password: String): Boolean {
+    suspend fun loginUser(username: String, password: String): Boolean {
         return try {
-            val response = service.loginUser(LoginRequest(email, password))
+            val response = service.loginUser(LoginRequest(username, password))
             if (response.isSuccessful) {
                 val authData = response.body()
                 println("✅ Login successful. Token: ${authData?.token}, User: ${authData?.username}")
@@ -26,9 +26,9 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun registerUser(email: String, password: String, userType: String, userType1: String): Boolean {
+    suspend fun registerUser(username: String, password: String, userType: String): Boolean {
         return try {
-            val response = service.registerUser(RegisterRequest(email, password, userType))
+            val response = service.registerUser(RegisterRequest(username, password, userType))
             if (response.isSuccessful) {
                 println("✅ User registered successfully. Token: ${response.body()?.token}")
                 true

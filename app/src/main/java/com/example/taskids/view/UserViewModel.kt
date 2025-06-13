@@ -31,9 +31,9 @@ class UserViewModel @Inject constructor(
         fetchUsers()
     }
 
-    fun loginUser(usernameOrEmail: String, password: String) {
+    fun loginUser(username: String, password: String) {
         viewModelScope.launch {
-            val success = repository.loginUser(usernameOrEmail, password)
+            val success = repository.loginUser(username, password)
             _loginSuccess.value = success // ✅ Update login state
             if (success) {
                 println("✅ Login successful!")
@@ -44,9 +44,9 @@ class UserViewModel @Inject constructor(
     }
 
 
-    fun registerUser(username: String, email: String, password: String, userType: String) {
+    fun registerUser(username: String, password: String, userType: String) {
         viewModelScope.launch {
-            val success = repository.registerUser(username, email, password, userType)
+            val success = repository.registerUser(username, password, userType)
             _registrationSuccess.value = success // ✅ Update registration state
             if (success) {
                 println("✅ Registration complete!")
