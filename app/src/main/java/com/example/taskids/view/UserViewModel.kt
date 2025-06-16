@@ -43,6 +43,16 @@ class UserViewModel @Inject constructor(
         }
     }
 
+    fun clearLoginState() {
+        _loginSuccess.value = null
+    }
+
+    fun clearRegistrationState() {
+        _registrationSuccess.value = null
+    }
+
+
+
 
     fun registerUser(username: String, password: String, userType: String) {
         viewModelScope.launch {

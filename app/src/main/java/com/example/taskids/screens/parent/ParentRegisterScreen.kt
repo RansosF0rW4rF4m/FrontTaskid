@@ -38,9 +38,35 @@ import kotlinx.coroutines.launch
 fun ParentRegisterScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var registrationMessage by remember { mutableStateOf("") } // ✅ Store feedback message
+    var confirmPassword by remember { mutableStateOf("") }
+    var registrationMessage by remember { mutableStateOf("") }
+
     val scope = rememberCoroutineScope()
-    val userViewModel: UserViewModel = hiltViewModel() // ✅ Inject ViewModel
+    val userViewModel: UserViewModel = hiltViewModel()
+
+    val isPasswordValid = remember(password) {
+        password.length >= 8 &&
+                password.any { it.isDigit() } &&
+                password.any { it.isLetter() } &&
+                password.any { it in "@#\$" }
+    }
+
+    val doPasswordsMatch = password == confirmPassword
+
+    // Observa mudanças no resultado do cadastro
+    val registrationSuccess by userViewModel.registrationSuccess
+
+    LaunchedEffect(registrationSuccess) {
+        registrationSuccess?.let { success ->
+            if (success) {
+                navController.navigate("parentlogin")
+                userViewModel.clearRegistrationState() // zera o estado
+            } else {
+                registrationMessage = "❌ Falha no cadastro. Tente novamente!"
+                userViewModel.clearRegistrationState()
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -62,33 +88,49 @@ fun ParentRegisterScreen(navController: NavController) {
         MyTextField(
             value = username,
             onValueChange = { username = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "Usuario",
+            modifier = Modifier.fillMaxWidth().padding(20.dp, 20.dp, 20.dp, 0.dp),
+            label = "Email",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        MyTextField(
+        MyTextFieldPassword(
             value = password,
             onValueChange = { password = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp, 20.dp, 20.dp, 0.dp),
+            modifier = Modifier.fillMaxWidth().padding(20.dp, 20.dp, 20.dp, 0.dp),
             label = "Senha",
             maxLines = 1,
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Password
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        MyTextFieldPassword(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            modifier = Modifier.fillMaxWidth().padding(20.dp, 0.dp, 20.dp, 0.dp),
+            label = "Confirmar Senha",
+            maxLines = 1,
+            keyboardType = KeyboardType.Password
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         CustomButton(
             onClick = {
-                scope.launch {
-                    userViewModel.registerUser(username, password, "guardian")
+                if (!isPasswordValid) {
+                    registrationMessage = "❌ A senha deve ter pelo menos 8 caracteres, incluindo letras, números e @, # ou $."
+                } else if (!doPasswordsMatch) {
+                    registrationMessage = "❌ As senhas não coincidem."
+                } else if (username.isBlank()) {
+                    registrationMessage = "❌ O email é obrigatório."
+                } else {
+                    registrationMessage = "" // Limpa mensagens anteriores
+                    scope.launch {
+                        userViewModel.registerUser(username, password, "guardian")
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth().height(80.dp).padding(10.dp),
@@ -96,17 +138,6 @@ fun ParentRegisterScreen(navController: NavController) {
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-
-        // ✅ Observe registration status and navigate only on success
-        LaunchedEffect(userViewModel.registrationSuccess.value) {
-            userViewModel.registrationSuccess.value?.let { success ->
-                if (success) {
-                    navController.navigate("parentlogin") // ✅ Navigate when registration succeeds
-                } else {
-                    registrationMessage = "❌ Falha no cadastro. Tente novamente!"
-                }
-            }
-        }
 
         Text(
             text = registrationMessage,
@@ -135,4 +166,3 @@ fun ParentRegisterScreen(navController: NavController) {
         )
     }
 }
-

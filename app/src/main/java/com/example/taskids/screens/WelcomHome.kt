@@ -17,7 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.taskids.components.CustomButton
 
-@OptIn(ExperimentalMaterial3Api::class)
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.example.taskids.R // Make sure you import your app's R
+
 @Composable
 fun HomeScreen(navController: NavHostController) {
     Column(
@@ -28,6 +33,23 @@ fun HomeScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
+        Text(
+            text = "Taskids!",
+            color = Color(0xFFE59900),
+            fontSize = 48.sp,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.star),
+            contentDescription = "App Logo",
+            modifier = Modifier
+                .height(120.dp)
+                .padding(bottom = 24.dp)
+        )
+
         Text(
             text = "Um serviço para cadastrar seus filhos com suas tarefas!",
             color = Color.Black,
@@ -44,4 +66,5 @@ fun HomeScreen(navController: NavHostController) {
         )
     }
 }
+
 

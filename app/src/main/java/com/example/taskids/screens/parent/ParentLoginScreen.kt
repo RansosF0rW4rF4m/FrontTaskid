@@ -38,9 +38,25 @@ import com.example.taskids.view.UserViewModel
 fun ParentLogin(navController: NavHostController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var loginMessage by remember { mutableStateOf("") } // ✅ Store feedback message
+    var loginMessage by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
-    val userViewModel: UserViewModel = hiltViewModel() // ✅ Inject ViewModel
+    val userViewModel: UserViewModel = hiltViewModel()
+
+    val loginSuccess by userViewModel.loginSuccess
+
+    LaunchedEffect(loginSuccess) {
+        loginSuccess?.let { success ->
+            if (success) {
+                navController.navigate("selection") {
+                    popUpTo("parentlogin") { inclusive = true }
+                }
+                userViewModel.clearLoginState()
+            } else {
+                loginMessage = "❌ Credenciais inválidas. Tente novamente!"
+                userViewModel.clearLoginState()
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -65,7 +81,7 @@ fun ParentLogin(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "email",
+            label = "Email",
             maxLines = 1,
             keyboardType = KeyboardType.Text
         )
@@ -78,32 +94,32 @@ fun ParentLogin(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 20.dp, 20.dp, 0.dp),
-            label = "password",
+            label = "Senha",
             maxLines = 1,
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Password
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         CustomButton(
             onClick = {
-                userViewModel.loginUser(username, password) // ✅ Call login API
+                loginMessage = "" // limpa mensagens antigas
+                if (username.isBlank() || password.isBlank()) {
+                    loginMessage = "❌ Preencha todos os campos."
+                } else {
+                    scope.launch {
+                        userViewModel.loginUser(username, password)
+                    }
+                }
             },
-            modifier = Modifier.fillMaxWidth().height(80.dp).padding(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .padding(10.dp),
             label = "Entrar"
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-
-        LaunchedEffect(userViewModel.loginSuccess.value) {
-            userViewModel.loginSuccess.value?.let { success ->
-                if (success) {
-                    navController.navigate("selection") // ✅ Navigate when login succeeds
-                } else {
-                    loginMessage = "❌ Credenciais inválidas. Tente novamente!"
-                }
-            }
-        }
 
         Text(
             text = loginMessage,
