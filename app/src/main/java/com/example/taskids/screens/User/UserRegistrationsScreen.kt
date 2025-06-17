@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import com.example.taskids.view.UserViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 
 
@@ -44,20 +47,30 @@ fun UserRegistrationScreen(
     viewModel: UserViewModel = hiltViewModel()
 ) {
     var username by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var bio by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }  // substituído email por firstName
+    var age by remember { mutableStateOf("") }
     var userType by remember { mutableStateOf("guardian") }
 
+    var errorMessage by remember { mutableStateOf("") }
     val textFieldShape = RoundedCornerShape(8.dp)
     val shadowElevation = 8.dp
 
     Scaffold(
         containerColor = Color.White,
         topBar = {
-            TopAppBar(title = { Text("Registrar Usuário",fontSize = 28.sp, fontWeight = FontWeight.Bold,
-                color = Color(0xFFE59900),) },
+            TopAppBar(
+                title = {
+                    Text(
+                        "Registrar Usuário",
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFE59900),
+                    )
+                },
                 colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White))
+                    containerColor = Color.White
+                )
+            )
         }
     ) { paddingValues ->
         Column(
@@ -111,9 +124,9 @@ fun UserRegistrationScreen(
                 color = Color.White
             ) {
                 TextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Email") },
+                    value = firstName,
+                    onValueChange = { firstName = it },
+                    label = { Text("Primeiro Nome") }, // label atualizado
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .shadow(
@@ -145,31 +158,25 @@ fun UserRegistrationScreen(
                 color = Color.White
             ) {
                 TextField(
-                    value = bio,
-                    onValueChange = { bio = it },
-                    label = { Text("Biografia") },
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .shadow(
-                            elevation = shadowElevation,
-                            shape = textFieldShape,
-                            clip = false
-                        ),
+                    value = age,
+                    onValueChange = { age = it },
+                    label = { Text("Idade") },
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
                         unfocusedContainerColor = Color.White,
-                        disabledContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
-                        disabledTextColor = Color.Black,
                         focusedLabelColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray,
-                        disabledLabelColor = Color.Gray,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        cursorColor = Color.Black
-                    )
+                        disabledIndicatorColor = Color.Transparent
+                    ),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small, clip = false)
                 )
             }
 
@@ -193,16 +200,6 @@ fun UserRegistrationScreen(
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Button(
-                    onClick = { userType = "guardian" },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (userType == "guardian") Color(0xFFE8A319) else Color.Gray,
-                        contentColor = Color.White
-                    ),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Responsável")
-                }
 
                 Button(
                     onClick = { userType = "kid" },
@@ -218,26 +215,49 @@ fun UserRegistrationScreen(
 
             Button(
                 onClick = {
-                    val newUser = UserModel(
-                        id = 0,
-                        username = username,
-                        email = email,
-                        first_name = null,
-                        last_name = null,
-                        user_type = userType,
-                        bio = null,
-                        kids = emptyList(),
-                        guardians = emptyList()
-                    )
-                    viewModel.addUser(newUser)
-                    navController.popBackStack()
+                    val ageInt = age.toIntOrNull()
+
+                    if (username.isBlank() || firstName.isBlank() || ageInt == null || userType != "kid") {
+                        errorMessage = when {
+                            username.isBlank() || firstName.isBlank() || ageInt == null ->
+                                "❌ Preencha todos os campos corretamente."
+                            userType != "kid" ->
+                                "❌ Selecione o tipo de usuário Filho(a)."
+                            else -> "❌ Algo deu errado. Verifique os campos."
+                        }
+                    } else {
+                        val newUser = UserModel(
+                            id = 0,
+                            username = username,
+                            email = null,
+                            first_name = firstName,
+                            last_name = null,
+                            user_type = userType,
+                            age = ageInt,
+                            kids = emptyList(),
+                            guardians = emptyList()
+                        )
+                        viewModel.addUser(newUser)
+                        navController.popBackStack()
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFE8A319),
                     contentColor = Color.White
                 ),
-                modifier = Modifier.fillMaxWidth(0.5f)) {
+                modifier = Modifier.fillMaxWidth(0.5f)
+            ) {
                 Text("Cadastrar Usuário")
+            }
+
+            if (errorMessage.isNotBlank()) {
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
             }
         }
     }

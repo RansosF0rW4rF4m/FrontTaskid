@@ -1,7 +1,6 @@
 package com.example.taskids.screens.parent
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -41,26 +40,17 @@ fun UserListScreen(
     val users = viewModel.users.value
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
+    LaunchedEffect(Unit) {
+        viewModel.fetchUsers()
+    }
 
     var searchQuery by remember { mutableStateOf("") }
-    var selectedUserType by remember { mutableStateOf("Todos") }
 
-    val userTypeLabels = mapOf(
-        "Todos" to "Todos",
-        "Responsável" to "guardian",
-        "Criança" to "kid"
-    )
-
-    // Filtro aplicando busca por nome/email e tipo
     val filteredUsers = users.filter { user ->
-        val matchesQuery = searchQuery.isBlank() ||
-                user.username?.contains(searchQuery, ignoreCase = true) == true ||
-                (user.email?.contains(searchQuery, ignoreCase = true) == true)
-
-        val matchesType = selectedUserType == "Todos" ||
-                user.user_type.equals(selectedUserType, ignoreCase = true)
-
-        matchesQuery && matchesType
+        user.user_type.equals("kid", ignoreCase = true) &&
+                (searchQuery.isBlank() ||
+                        user.username?.contains(searchQuery, ignoreCase = true) == true ||
+                        user.age?.toString()?.contains(searchQuery) == true)
     }
 
     LaunchedEffect(listState) {
@@ -78,15 +68,13 @@ fun UserListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Lista de Usuários",
+                        text = "Crianças Cadastradas",
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE59900),
+                        color = Color(0xFFE59900)
                     )
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
-                )
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
             )
         },
         floatingActionButton = {
@@ -96,8 +84,8 @@ fun UserListScreen(
                 modifier = Modifier.clip(CircleShape)
             ) {
                 Icon(
-                    Icons.Default.Add,
-                    contentDescription = "Adicionar Usuário",
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Adicionar Criança",
                     tint = Color.White
                 )
             }
@@ -112,7 +100,7 @@ fun UserListScreen(
             TextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                label = { Text("Pesquisar por Nome ou Email") },
+                label = { Text("Pesquisar por Nome ou Idade") },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
@@ -127,39 +115,8 @@ fun UserListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)
-                    .shadow(
-                        elevation = 8.dp,
-                        shape = MaterialTheme.shapes.small,
-                        clip = false
-                    )
+                    .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small)
             )
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-            ) {
-                userTypeLabels.forEach { (label, value) ->
-                    val selected = selectedUserType == value
-
-                    Button(
-                        onClick = { selectedUserType = value },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (selected) Color(0xFFE8A319) else Color.LightGray,
-                            contentColor = if (selected) Color.White else Color.Black
-                        ),
-                        border = if (selected) BorderStroke(2.dp, Color.White) else null,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = label,
-                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
-                        )
-                    }
-
-                }
-            }
 
             LazyColumn(
                 state = listState,

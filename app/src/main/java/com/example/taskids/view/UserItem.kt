@@ -30,7 +30,9 @@ fun UserItem(
         shape = MaterialTheme.shapes.medium,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -40,16 +42,14 @@ fun UserItem(
                         .ifEmpty { user.username ?: "Usuário sem nome" },
                     style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black, fontSize = 16.sp)
                 )
-                Text(
-                    text = user.first_name.toString(),
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray, fontSize = 14.sp)
-                )
-                if (!user.email.isNullOrEmpty()) {
+
+                user.age?.let { age ->
                     Text(
-                        text = user.email,
+                        text = "Idade: $age anos",
                         style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray, fontSize = 14.sp)
                     )
                 }
+
             }
 
             Row {
@@ -60,3 +60,4 @@ fun UserItem(
         }
     }
 }
+

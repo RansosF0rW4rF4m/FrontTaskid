@@ -10,7 +10,7 @@ data class UserModel(
     val first_name: String?,
     @SerialName("last_name") val last_name: String?,
     @SerialName("user_type") val user_type: String?,
-    val bio: String? = null,
+    val age: Int? = null,
     val kids: List<Int>,
     val guardians: List<Int>
 )

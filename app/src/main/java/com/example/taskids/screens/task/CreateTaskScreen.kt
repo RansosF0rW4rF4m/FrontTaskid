@@ -57,6 +57,7 @@ fun CreateTaskScreen(
     var assigned_to by remember { mutableStateOf<String?>(null) }
     var expanded by remember { mutableStateOf(false) }
 
+    var errorMessage by remember { mutableStateOf("") }
     val shadowElevation = 8.dp
     val textFieldShape = RoundedCornerShape(8.dp)
 
@@ -81,20 +82,31 @@ fun CreateTaskScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    val pointsInt = points.toIntOrNull() ?: 10
+                    val pointsInt = points.toIntOrNull()
                     val assignedUser = users.find { it.username == assigned_to }
                     val assignedUserId = assignedUser?.id
 
-                    val newTask = TaskModel(
-                        id = 0,
-                        title = title,
-                        description = description,
-                        assigned_to = assignedUserId,
-                        completed = false,
-                        points = pointsInt
-                    )
-                    viewModel.createTask(newTask)
-                    navController.popBackStack()
+                    if (title.isBlank() || description.isBlank() || pointsInt == null || assignedUserId == null) {
+                        errorMessage = when {
+                            title.isBlank() || description.isBlank() || pointsInt == null ->
+                                "❌ Preencha título, descrição e pontos corretamente."
+                            assignedUserId == null ->
+                                "❌ Selecione a criança que receberá a tarefa."
+                            else ->
+                                "❌ Verifique os campos e tente novamente."
+                        }
+                    } else {
+                        val newTask = TaskModel(
+                            id = 0,
+                            title = title,
+                            description = description,
+                            assigned_to = assignedUserId,
+                            completed = false,
+                            points = pointsInt
+                        )
+                        viewModel.createTask(newTask)
+                        navController.popBackStack()
+                    }
                 },
                 containerColor = Color(0xFFE59900),
                 modifier = Modifier.clip(CircleShape)
@@ -209,6 +221,16 @@ fun CreateTaskScreen(
                 )
             )
 
+            if (errorMessage.isNotBlank()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
@@ -237,6 +259,7 @@ fun CreateTaskScreen(
                         )
                     }
                 }
+
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,7 +51,8 @@ fun EditUserProfileScreen(
 
     user?.let { userData ->
         var username by remember { mutableStateOf(userData.username ?: "") }
-        var email by remember { mutableStateOf(userData.email ?: "") }
+        var firstName by remember { mutableStateOf(userData.first_name ?: "") }
+        var age by remember { mutableStateOf(userData.age?.toString() ?: "") }
 
         Scaffold(
             containerColor = Color.White,
@@ -69,7 +72,11 @@ fun EditUserProfileScreen(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        val updatedUser = userData.copy(username = username, email = email)
+                        val updatedUser = userData.copy(
+                            username = username,
+                            first_name = firstName,
+                            age = age.toIntOrNull()
+                        )
                         viewModel.updateUser(userId, updatedUser)
                         navController.popBackStack()
                     },
@@ -107,6 +114,48 @@ fun EditUserProfileScreen(
                         .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small, clip = false)
                 )
 
+                TextField(
+                    value = firstName,
+                    onValueChange = { firstName = it },
+                    label = { Text("Primeiro Nome") },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small, clip = false)
+                )
+
+                TextField(
+                    value = age,
+                    onValueChange = { age = it },
+                    label = { Text("Idade") },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent
+                    ),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small, clip = false)
+                )
             }
         }
     } ?: run {
