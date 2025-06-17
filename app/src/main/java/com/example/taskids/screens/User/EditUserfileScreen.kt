@@ -107,26 +107,6 @@ fun EditUserProfileScreen(
                         .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small, clip = false)
                 )
 
-                TextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Email") },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                        .shadow(elevation = 8.dp, shape = MaterialTheme.shapes.small, clip = false)
-                )
             }
         }
     } ?: run {
