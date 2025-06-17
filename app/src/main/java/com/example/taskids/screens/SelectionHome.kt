@@ -50,6 +50,17 @@ fun SelectionScreen(navController: NavHostController) {
                 .padding(10.dp),
             label = "Tarefa"
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CustomButton(
+            onClick = {navController.navigate("rewardsList")},
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .padding(10.dp),
+            label = "Recompensas"
+        )
     }
 }
 

@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.taskids.models.RewardsModel
 import com.example.taskids.screens.HomeScreen
 import com.example.taskids.screens.SelectionScreen
 import com.example.taskids.screens.User.EditUserProfileScreen
@@ -19,10 +20,14 @@ import com.example.taskids.screens.User.UserRegistrationScreen
 import com.example.taskids.screens.parent.ParentLogin
 import com.example.taskids.screens.parent.ParentRegisterScreen
 import com.example.taskids.screens.parent.UserListScreen
+import com.example.taskids.screens.rewards.CreateRewardScreen
+import com.example.taskids.screens.rewards.EditRewardScreen
+import com.example.taskids.screens.rewards.RewardsListScreen
 import com.example.taskids.screens.task.CreateTaskScreen
 import com.example.taskids.screens.task.EditTaskScreen
 import com.example.taskids.screens.task.TaskListScreen
 import com.example.taskids.ui.theme.TaskidsTheme
+import com.example.taskids.view.RewardsViewModel
 import com.example.taskids.view.TaskViewModel
 import com.example.taskids.view.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,6 +81,24 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         composable("createTask") { CreateTaskScreen(navController) }
+
+                        //Lista de Rewards
+                        composable("rewardsList") { RewardsListScreen(navController) }
+                        composable("createReward") { CreateRewardScreen(navController) }
+
+                        composable("editReward/{rewardId}") { backStackEntry ->
+                            val rewardId = backStackEntry.arguments?.getString("rewardId")?.toIntOrNull()
+                            val viewModel: RewardsViewModel = hiltViewModel()
+
+                            if (rewardId != null) {
+                                EditRewardScreen(navController, viewModel, rewardId)
+                            } else {
+                                Text("❌ Error: Reward ID not found")
+                            }
+                        }
+
+
+
                     }
                 }
             }
