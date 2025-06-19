@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class ApiService @Inject constructor() {
     companion object {
 //        const val BASE_URL = "http://15.228.60.100:8000/"
-        const val BASE_URL = "http://192.168.2.133:8000"
+        const val BASE_URL = "http://18.229.162.5:8000"
 //        MUDAR ROTA DE ACORDO COM O IP DA MAQUINA
     }
 
